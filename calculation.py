@@ -1,18 +1,24 @@
 from tkinter import *
 import cmath
 from math import sqrt
+# import gmpy
+from sys import maxsize
 import googletrans
 
 
-#Validating input values and calculating result value
+# ычисление квадратного корня небольших чисел и комплексных, возвращает либо результат вычислений, либо ошибку
 def calculate(string):
     try:
         res = sqrt(float(string))
+
         if(int(res) == float(res)):
             res = str(int(res))
         else:
             res = str(float(res))
         return res
+    except OverflowError:
+        return calculate_big_numbers(int(string))
+
     except ValueError:
         try:
             tmp = string
@@ -23,7 +29,24 @@ def calculate(string):
             return 'Please, enter a number'
 
 
+# вычисление корня из очень больших чисел
 def calculate_big_numbers(number):
-    pass
+    high = 1
+    degree = 2
+
+    while high ** degree < number:
+        high *= 2
+    low = high // 2
+    while low < high:
+        mid = (low + high) // 2
+        if low < mid and mid ** degree < number:
+            low = mid
+        elif high > mid and mid ** degree > number:
+            high = mid
+        else:
+            return mid
+    return mid + 1
+
+
 
 

@@ -2,6 +2,7 @@ from tkinter import *
 from calculation import calculate
 
 
+# реализация пользовательского интерфейса
 def load_inter():
     global ans, txt
 
@@ -29,7 +30,7 @@ def load_inter():
 
     main_menu.add_cascade(label='Language', menu=lang_m)
     # OUTPUT area
-    out = Entry(window, textvariable=ans, width=33, font=('Helvetica', 20), justify='right',
+    out = Entry(window, textvariable=ans, width=50, font=('Helvetica', 20), justify='left',
                 relief='sunken', state='readonly')
     out.place(x=0, y=0)
     # INPUT area
@@ -46,6 +47,7 @@ def load_inter():
     window.mainloop()
 
 
+# функция считывает введённое пользователем значение из диалога ввода, и выводит вычесленное
 def get_and_set_number():
     num = txt.get()
     ans.set(calculate(num))
