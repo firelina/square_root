@@ -1,6 +1,7 @@
 from tkinter import *
 import cmath
 from math import sqrt
+from decimal import Decimal
 # import gmpy
 from sys import maxsize
 import googletrans
@@ -48,5 +49,9 @@ def calculate_big_numbers(number):
     return mid + 1
 
 
-
-
+# вычисление корня из очень больших чисел
+def calculate_big_numbers1(number):
+    degree = 2
+    nd = Decimal(number)
+    exponent = Decimal("1.0") / Decimal(degree)
+    return nd ** exponent
