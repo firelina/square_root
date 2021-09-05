@@ -3,6 +3,65 @@ import cmath
 import math
 
 
+# Validating input values and calculating result value
+def calculate(num, prec):
+    dictt = {'input' : ['Incorrect input', 'Entrada incorrecta', '输入不正确', 'Неверный ввод'],
+             'ent_num' : ['Please, enter a number', 'Por favor, introduzca un número', '请输入数字', 'Пожалуйста, введите число']}
+
+    if (state_.get() == True):
+        try:
+            INPT = num
+            INPT = float(INPT)
+
+            def x(n, INPT):
+                return (1 / 2) * (n + INPT / n)
+
+            sqrt = 0
+            n = 1
+            e = prec
+            e = float(e)
+            if (e < 0):
+                return dictt['input'][lang_now.get()]
+            elif INPT < 0:
+                return dictt['input'][lang_now.get()]
+            else:
+                while abs(x(n, INPT) - n) > e:
+                    sqrt = x(n, INPT)
+                    n = sqrt
+                if (sqrt == 0):
+                    return str(0)
+                else:
+                    return '±' + str(sqrt)
+        except ValueError:
+            return dictt['ent_num'][lang_now.get()]
+    else:
+        try:
+            res = math.sqrt(float(num))
+            if (int(res) == float(res)):
+                res = str(int(res))
+            else:
+                res = str(float(res))
+            if (res == '0'):
+                return res
+            else:
+                return '±' + str(res)
+        except ValueError:
+            try:
+                tmp = num
+                # if tmp
+                tmp = tmp.replace(' ', '')
+
+                res = cmath.sqrt(complex(tmp))
+                if (res.real == 0):
+                    return '±' + str(res.imag) + 'j'
+                else:
+                    re = str(res.real)
+                    im = str(res.imag)
+                    return '±' + re + '∓' + im + 'j'
+            except ValueError:
+                return dictt['ent_num'][lang_now.get()]
+
+
 class CreateToolTip(object):
     """
     create a tooltip for a given widget
@@ -70,7 +129,8 @@ def trans_0():
     INPT_TIP = CreateToolTip(txt, \
                              'Enter in this field the number whose square root you want to calculate. '
                              'Then click on the "Calculate" button. '
-                             'To work with complex numbers, use j, not i. ')
+                             'To work with complex numbers, use j, not i. '
+                             'To work with real numbers, use ".", not ","')
     button1_ttp = CreateToolTip(tipBtn, \
                                 'If you want to calculate the square root with the specified precision,'
                                 'check the checkbox. After that, enter the precision with which '
@@ -89,7 +149,8 @@ def trans_1():
     INPT_TIP = CreateToolTip(txt, \
                              'Introduzca en este campo el número cuya raíz cuadrada desea calcular. '
                              'A continuación, haga clic en el botón "Calcular". '
-                             'Para trabajar con números complejos, use j, no i. ')
+                             'Para trabajar con números complejos, use j, no i. '
+                             'Para trabajar con números reales, use ".", No ","')
     button1_ttp = CreateToolTip(tipBtn, \
                                 'Si desea calcular la raíz cuadrada con la precisión especificada,'
                                 'marca la casilla de verificación. Después de eso, introduzca la precisión con la que '
@@ -108,7 +169,8 @@ def trans_2():
     INPT_TIP = CreateToolTip(txt, \
                              '在此字段中输入要计算其平方根的数字。 '
                              '然后点击"计算"按钮。 '
-                             '要处理复数，请使用j，而不是i。')
+                             '要处理复数，请使用j，而不是i。'
+                             '要处理实数，请使用“.”，而不是“,”')
     button1_ttp = CreateToolTip(tipBtn, \
                                 '如果你想以指定的精度计算平方根，'
                                 '勾选复选框。 之后，输入精度与'
@@ -127,7 +189,8 @@ def trans_3():
     INPT_TIP = CreateToolTip(txt, \
                              'Введите в это поле число, корень квадратный которого надо '
                              'вычислить. Затем нажмите на кнопку "Вычислить". Чтобы '
-                             'работать с комплексными числами, используйте j вместо i. ')
+                             'работать с комплексными числами, используйте j вместо i. '
+                             'Чтобы работать с вещественными числами, используйте ".", а не ","')
     button1_ttp = CreateToolTip(tipBtn, \
                                 'Если вы хотите выполнить вычисление квадратного корня с '
                                 'заданной точностью, поставьте галочку в клеточку. После '
@@ -147,218 +210,15 @@ def check_state():
 def clear():
     txt.delete(0, 'end')
 
+
 def clearper():
     set_prec.delete(0,'end')
 
-# Validating input values and calculating result value
+
 def clicked():
-    if (lang_now.get() == 0):
-        if (state_.get() == True):
-            try:
-                INPT = txt.get()
-                INPT = float(INPT)
-
-                def x(n, INPT):
-                    return (1 / 2) * (n + INPT / n)
-
-                sqrt = 0
-                n = 1
-                e = set_prec.get()
-                e = float(e)
-                if (e < 0):
-                    ans.set('Incorrect input')
-                elif INPT < 0:
-                    ans.set('Incorrect input')
-                else:
-                    while abs(x(n, INPT) - n) > e:
-                        sqrt = x(n, INPT)
-                        n = sqrt
-                    if (sqrt == 0):
-                        ans.set(str(0))
-                    else:
-                        ans.set('±' + str(sqrt))
-            except ValueError:
-                ans.set('Please, enter a number')
-        else:
-            try:
-                res = math.sqrt(float(txt.get()))
-                if (int(res) == float(res)):
-                    res = str(int(res))
-                else:
-                    res = str(float(res))
-                if (res == '0'):
-                    ans.set(res)
-                else:
-                    ans.set('±' + str(res))
-            except ValueError:
-                try:
-                    tmp = txt.get()
-                    tmp = tmp.replace(' ', '')
-                    res = cmath.sqrt(complex(tmp))
-                    if (res.real == 0):
-                        ans.set('±' + str(res.imag) + 'j')
-                    else:
-                        re = str(res.real)
-                        im = str(res.imag)
-                        ans.set(re + '±' + im + 'j')
-                except ValueError:
-                    ans.set('Please, enter a number')
-
-    elif (lang_now.get() == 1):
-        if (state_.get() == True):
-            try:
-                INPT = txt.get()
-                INPT = float(INPT)
-
-                def x(n, INPT):
-                    return (1 / 2) * (n + INPT / n)
-
-                sqrt = 0
-                n = 1
-                e = set_prec.get()
-                e = float(e)
-                if (e < 0):
-                    ans.set('Entrada incorrecta')
-                elif INPT < 0:
-                    ans.set('Entrada incorrecta')
-                else:
-                    while abs(x(n, INPT) - n) > e:
-                        sqrt = x(n, INPT)
-                        n = sqrt
-                    if (sqrt == 0):
-                        ans.set(str(0))
-                    else:
-                        ans.set('±' + str(sqrt))
-            except ValueError:
-                ans.set('Por favor, introduzca un número')
-        else:
-            try:
-                res = math.sqrt(float(txt.get()))
-                if (int(res) == float(res)):
-                    res = str(int(res))
-                else:
-                    res = str(float(res))
-                if (res == '0'):
-                    ans.set(res)
-                else:
-                    ans.set('±' + str(res))
-            except ValueError:
-                try:
-                    tmp = txt.get()
-                    tmp = tmp.replace(' ', '')
-                    res = cmath.sqrt(complex(tmp))
-                    if (res.real == 0):
-                        ans.set('±' + str(res.imag) + 'j')
-                    else:
-                        re = str(res.real)
-                        im = str(res.imag)
-                        ans.set(re + '±' + im + 'j')
-                except ValueError:
-                    ans.set('Por favor, introduzca un número')
-
-    elif (lang_now.get() == 2):
-        if (state_.get() == True):
-            try:
-                INPT = txt.get()
-                INPT = float(INPT)
-
-                def x(n, INPT):
-                    return (1 / 2) * (n + INPT / n)
-
-                sqrt = 0
-                n = 1
-                e = set_prec.get()
-                e = float(e)
-                if (e < 0):
-                    ans.set('输入不正确')
-                elif INPT < 0:
-                    ans.set('输入不正确')
-                else:
-                    while abs(x(n, INPT) - n) > e:
-                        sqrt = x(n, INPT)
-                        n = sqrt
-                    if (sqrt == 0):
-                        ans.set(str(0))
-                    else:
-                        ans.set('±' + str(sqrt))
-            except ValueError:
-                ans.set('请输入数字')
-        else:
-            try:
-                res = math.sqrt(float(txt.get()))
-                if (int(res) == float(res)):
-                    res = str(int(res))
-                else:
-                    res = str(float(res))
-                if (res == '0'):
-                    ans.set(res)
-                else:
-                    ans.set('±' + str(res))
-            except ValueError:
-                try:
-                    tmp = txt.get()
-                    tmp = tmp.replace(' ', '')
-                    res = cmath.sqrt(complex(tmp))
-                    if (res.real == 0):
-                        ans.set('±' + str(res.imag) + 'j')
-                    else:
-                        re = str(res.real)
-                        im = str(res.imag)
-                        ans.set(re + '±' + im + 'j')
-                except ValueError:
-                    ans.set('请输入数字')
-
-    elif (lang_now.get() == 3):
-        if (state_.get() == True):
-            try:
-                INPT = txt.get()
-                INPT = float(INPT)
-
-                def x(n, INPT):
-                    return (1 / 2) * (n + INPT / n)
-
-                sqrt = 0
-                n = 1
-                e = set_prec.get()
-                e = float(e)
-                if (e < 0):
-                    ans.set('Неверный ввод')
-                elif INPT < 0:
-                    ans.set('Неверный ввод')
-                else:
-                    while abs(x(n, INPT) - n) > e:
-                        sqrt = x(n, INPT)
-                        n = sqrt
-                    if (sqrt == 0):
-                        ans.set(str(0))
-                    else:
-                        ans.set('±' + str(sqrt))
-            except ValueError:
-                ans.set('Пожалуйста, введите число')
-        else:
-            try:
-                res = math.sqrt(float(txt.get()))
-                if (int(res) == float(res)):
-                    res = str(int(res))
-                else:
-                    res = str(float(res))
-                if (res == '0'):
-                    ans.set(res)
-                else:
-                    ans.set('±' + str(res))
-            except ValueError:
-                try:
-                    tmp = txt.get()
-                    tmp = tmp.replace(' ', '')
-                    res = cmath.sqrt(complex(tmp))
-                    if (res.real == 0):
-                        ans.set('±' + str(res.imag) + 'j')
-                    else:
-                        re = str(res.real)
-                        im = str(res.imag)
-                        ans.set(re + '±' + im + 'j')
-                except ValueError:
-                    ans.set('Пожалуйста, введите число')
+    num = txt.get()
+    prec = set_prec.get()
+    ans.set(calculate(num, prec))
 
 
 # Creating window
