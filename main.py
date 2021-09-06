@@ -1,3 +1,4 @@
+import tkinter
 from tkinter import *
 import cmath
 import math
@@ -5,8 +6,9 @@ import math
 
 # Validating input values and calculating result value
 def calculate(num, prec):
-    dictt = {'input' : ['Incorrect input', 'Entrada incorrecta', '输入不正确', 'Неверный ввод'],
-             'ent_num' : ['Please, enter a number', 'Por favor, introduzca un número', '请输入数字', 'Пожалуйста, введите число']}
+    dictt = {'input': ['Incorrect input', 'Entrada incorrecta', '输入不正确', 'Неверный ввод'],
+             'ent_num': ['Please, enter a number', 'Por favor, introduzca un número', '请输入数字',
+                         'Пожалуйста, введите число']}
 
     if (state_.get() == True):
         try:
@@ -199,26 +201,78 @@ def trans_3():
 
 
 # Check state
+'''
 def check_state():
     if (state_.get() == True):
         set_prec.config(state='normal')
     else:
         set_prec.config(state='readonly')
+'''
 
 
 # CLEAR
 def clear():
+    txt['state'] = 'normal'
     txt.delete(0, 'end')
+    txt['state'] = 'readonly'
 
 
 def clearper():
-    set_prec.delete(0,'end')
+    set_prec['state'] = 'normal'
+    set_prec.delete(0, 'end')
+    set_prec['state'] = 'readonly'
 
 
+# clicked_calculate
 def clicked():
     num = txt.get()
     prec = set_prec.get()
     ans.set(calculate(num, prec))
+
+
+#   set_symbol_functions
+def set_number_symbol(value):
+    txt['state'] = 'normal'
+    txt.delete(0, 'end')
+    txt.insert(0, value)
+    txt['state'] = 'readonly'
+
+
+def set_prec_symbol(value):
+    set_prec['state'] = 'normal'
+    set_prec.delete(0, 'end')
+    set_prec.insert(0, value)
+    set_prec['state'] = 'readonly'
+
+
+# key_events
+def press_key(event):
+    if not state_.get():
+        if event.char == '\r':
+            clicked()
+        elif event.char == '\x08':
+            value = txt.get()
+            value = value[:-1]
+            set_number_symbol(value)
+        elif event.char.isdigit() or event.char in '+-..j':
+            value = txt.get() + event.char
+            if event.char.isdigit():
+                set_number_symbol(value)
+            elif value[-1] == value[-2]:
+                value = value[:-1]
+            elif value[-2] == '-' and value[-1] == '+':
+                value = value[:-2] + '+'
+            elif value[-2] == '+' and value[-1] == '-':
+                value = value[:-2] + '-'
+            set_number_symbol(value)
+
+    else:
+        if event.char == '\x08':
+            value = set_prec.get()
+            value = value[:-1]
+            set_prec_symbol(value)
+        elif event.char.isdigit():
+            set_prec_symbol(set_prec.get() + event.char)
 
 
 # Creating window
@@ -227,7 +281,8 @@ window.geometry('500x130')
 window.resizable(width=False, height=False)
 window.title('Square root of a number')
 photo = PhotoImage(file='logo.png')
-window.iconphoto(False,photo)
+window.iconphoto(False, photo)
+window.bind('<Key>', press_key)
 '''
 Creating elements
 '''
@@ -256,7 +311,7 @@ main_menu.add_cascade(label='Help', menu=about_m)
 out = Entry(window, textvariable=ans, width=83, justify='right', relief='sunken', state='readonly')
 out.place(x=0, y=0)
 # INPUT area
-txt = Entry(window, width=30,justify='right')
+txt = Entry(window, width=30, justify='right', state='readonly')
 txt.place(x=20, y=60)
 INPT_TIP = CreateToolTip(txt, \
                          'Enter in this field the number whose square root you want to calculate. '
@@ -266,10 +321,10 @@ INPT_TIP = CreateToolTip(txt, \
 # Calculate with given PRECISION
 state_ = BooleanVar()
 state_.set(0)
-chk = Checkbutton(window, variable=state_, onvalue=1, offvalue=0,command=check_state)
+chk = Checkbutton(window, variable=state_, onvalue=1, offvalue=0)
 chk.place(x=300, y=60)
 ##Entry for PREC
-set_prec = Entry(window, width=22, relief='sunken', state='readonly',justify='right')
+set_prec = Entry(window, width=22, relief='sunken', state='readonly', justify='right')
 set_prec.place(x=320, y=60)
 ###TIP for USER
 loadimage = PhotoImage(file='yes4.png')
@@ -289,9 +344,8 @@ btn_del_all.place(x=95, y=83)
 btn_del_all_per = Button(window, text='Remove precision', command=clearper)
 btn_del_all_per.place(x=320, y=83)
 
-
 # Creating BUTTON
-btn = Button(window, text='Calculate',  command=clicked)
+btn = Button(window, text='Calculate', command=clicked)
 btn.place(x=20, y=83)
 
 window.config(menu=main_menu)
