@@ -265,16 +265,20 @@ def press_key(event):
             elif value[-2] == '+' and value[-1] == '-':
                 value = value[:-2] + '-'
             set_number_symbol(value)
-
     else:
         if event.char == '\x08':
             value = set_prec.get()
             value = value[:-1]
             set_prec_symbol(value)
+        elif event.char == '\r':
+            clicked()
         elif event.char.isdigit():
             set_prec_symbol(set_prec.get() + event.char)
-
-
+        elif event.char in '..':
+            value=set_prec.get() + event.char
+            if value[-1] == value[-2]:
+                value=value[:-1]
+            set_prec_symbol(value)
 # Creating window
 window = Tk()
 window.geometry('500x130')
