@@ -201,15 +201,8 @@ def add_butts():
         empty_menu = Menu()
         window.config(menu=empty_menu)
         empty_menu.add_cascade(label='Language', menu=lang_m)
-        # lang_m.destroy()
-        # lang_m.delete(0, END)
-        # lang_m.destroy()
-        # lang_m.destroy()
-        # for i in range(len(keys_lang)):
-        #     lang_m.delete(i)
-        # lang_m = Menu()
-        # main_menu.add_cascade(label='Language', menu=lang_m)
-        # window.config(menu=main_menu)
+        empty_menu.add_cascade(label='Help', menu=about_m)
+
 
     f = open("all_languages", encoding="utf-8")
     data = f.read()
@@ -226,7 +219,7 @@ def add_butts():
         lang_m.add_radiobutton(label=lang_title, variable=lang_now, value=lang_title)
     f.close()
     # print(trans)
-    window.after(20000, add_butts)
+    window.after(5000, add_butts)
 
 
 
