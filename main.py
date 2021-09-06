@@ -3,6 +3,8 @@ import cmath
 import math
 
 
+
+
 # Validating input values and calculating result value
 def calculate(num, prec):
     dictt = {'input' : ['Incorrect input', 'Entrada incorrecta', '输入不正确', 'Неверный ввод'],
@@ -21,9 +23,9 @@ def calculate(num, prec):
             e = prec
             e = float(e)
             if (e < 0):
-                return dictt['input'][lang_now.get()]
+                return trans[lang_now.get()]["input"]
             elif INPT < 0:
-                return dictt['input'][lang_now.get()]
+                return trans[lang_now.get()]["input"]
             else:
                 while abs(x(n, INPT) - n) > e:
                     sqrt = x(n, INPT)
@@ -33,7 +35,7 @@ def calculate(num, prec):
                 else:
                     return '±' + str(sqrt)
         except ValueError:
-            return dictt['ent_num'][lang_now.get()]
+            return trans[lang_now.get()["ent_num"]]
     else:
         try:
             res = math.sqrt(float(num))
@@ -59,7 +61,7 @@ def calculate(num, prec):
                     im = str(res.imag)
                     return '±' + re + '∓' + im + 'j'
             except ValueError:
-                return dictt['ent_num'][lang_now.get()]
+                return trans[lang_now.get()["ent_num"]]
 
 
 class CreateToolTip(object):
@@ -117,85 +119,28 @@ class CreateToolTip(object):
             tw.destroy()
 
 
+keys_lang = []
+keys_trans = ["title", "text", 'del_num', 'del_per', 'lang', 'help', 'aboutus', 'enter_num_tip', 'enter_per_tip', 'input', 'ent_num']
+
+# trans = {'English': {"title": 'Square root of a number', "text": 'Calculate', 'del_num': 'Remove number',
+#           'del_per': 'Remove precision', 'lang': 'Language', 'help': 'Help', 'aboutus': 'About us'}}
+trans = {}
+
 # TRANSLATE
-def trans_0():
-    window.title('Square root of a number')
-    btn['text'] = 'Calculate'
-    btn_del_all['text'] = 'Remove number'
-    btn_del_all_per['text'] = 'Remove precision'
-    main_menu.entryconfig(1, label='Language')
-    main_menu.entryconfig(2, label='Help')
-    about_m.entryconfig(1, label='About us')
+def lang_change(*args):
+    # print(lang_now.get())
+    window.title(trans[lang_now.get()]["title"])
+    btn['text'] = trans[lang_now.get()]["text"]
+    btn_del_all['text'] = trans[lang_now.get()]["del_num"]
+    btn_del_all_per['text'] = trans[lang_now.get()]["del_per"]
+    main_menu.entryconfig(1, label=trans[lang_now.get()]["lang"])
+    main_menu.entryconfig(2, label=trans[lang_now.get()]["help"])
+    about_m.entryconfig(1, label=trans[lang_now.get()]["aboutus"])
     INPT_TIP = CreateToolTip(txt, \
-                             'Enter in this field the number whose square root you want to calculate. '
-                             'Then click on the "Calculate" button. '
-                             'To work with complex numbers, use j, not i. '
-                             'To work with real numbers, use ".", not ","')
+                             trans[lang_now.get()]["enter_num_tip"])
     button1_ttp = CreateToolTip(tipBtn, \
-                                'If you want to calculate the square root with the specified precision,'
-                                'check the checkbox. After that, enter the precision with which '
-                                'you want to perform the calculations. ')
-    lang_now.set(0)
+                                trans[lang_now.get()]["enter_per_tip"])
 
-
-def trans_1():
-    window.title('Raíz cuadrada de un número')
-    btn['text'] = 'Calcular'
-    btn_del_all['text'] = 'Eliminar número'
-    btn_del_all_per['text'] = 'Eliminar precisión'
-    main_menu.entryconfig(1, label='Idioma')
-    main_menu.entryconfig(2, label='Asistencia')
-    about_m.entryconfig(1, label='Sobre nosotros')
-    INPT_TIP = CreateToolTip(txt, \
-                             'Introduzca en este campo el número cuya raíz cuadrada desea calcular. '
-                             'A continuación, haga clic en el botón "Calcular". '
-                             'Para trabajar con números complejos, use j, no i. '
-                             'Para trabajar con números reales, use ".", No ","')
-    button1_ttp = CreateToolTip(tipBtn, \
-                                'Si desea calcular la raíz cuadrada con la precisión especificada,'
-                                'marca la casilla de verificación. Después de eso, introduzca la precisión con la que '
-                                'quieres hacer los cálculos. ')
-    lang_now.set(1)
-
-
-def trans_2():
-    window.title('数的平方根')
-    btn['text'] = '计算'
-    btn_del_all['text'] = '删除编号'
-    btn_del_all_per['text'] = '删除精度'
-    main_menu.entryconfig(1, label='语言')
-    main_menu.entryconfig(2, label='救命')
-    about_m.entryconfig(1, label='关于我们')
-    INPT_TIP = CreateToolTip(txt, \
-                             '在此字段中输入要计算其平方根的数字。 '
-                             '然后点击"计算"按钮。 '
-                             '要处理复数，请使用j，而不是i。'
-                             '要处理实数，请使用“.”，而不是“,”')
-    button1_ttp = CreateToolTip(tipBtn, \
-                                '如果你想以指定的精度计算平方根，'
-                                '勾选复选框。 之后，输入精度与'
-                                '你想执行计算。 ')
-    lang_now.set(2)
-
-
-def trans_3():
-    window.title('Вычисление квдратного корня числа')
-    btn['text'] = 'Вычислить'
-    btn_del_all['text'] = 'Удалить число'
-    btn_del_all_per['text'] = 'Очистить точность'
-    main_menu.entryconfig(1, label='Язык')
-    main_menu.entryconfig(2, label='Помощь')
-    about_m.entryconfig(1, label='О нас')
-    INPT_TIP = CreateToolTip(txt, \
-                             'Введите в это поле число, корень квадратный которого надо '
-                             'вычислить. Затем нажмите на кнопку "Вычислить". Чтобы '
-                             'работать с комплексными числами, используйте j вместо i. '
-                             'Чтобы работать с вещественными числами, используйте ".", а не ","')
-    button1_ttp = CreateToolTip(tipBtn, \
-                                'Если вы хотите выполнить вычисление квадратного корня с '
-                                'заданной точностью, поставьте галочку в клеточку. После '
-                                'этого введите точность, с который вы хотите произвести вычисления. ')
-    lang_now.set(3)
 
 
 # Check state
@@ -232,8 +177,10 @@ window.iconphoto(False,photo)
 Creating elements
 '''
 
-lang_now = IntVar()
-lang_now.set(0)
+lang_now = StringVar()
+lang_now.set('English')
+lang_now.trace("w", lang_change)
+
 
 ans = StringVar()
 ans.set('')
@@ -241,16 +188,63 @@ ans.set('')
 # MENU
 main_menu = Menu()
 
-lang_m = Menu()
-lang_m.add_command(label="English", command=trans_0)
-lang_m.add_command(label="Español", command=trans_1)
-lang_m.add_command(label="中文", command=trans_2)
-lang_m.add_command(label="Русский", command=trans_3)
+
+
+# files = ['eng', 'spn', 'rus', 'cha']
+
+def add_butts():
+    lang_m = Menu()
+    if not keys_lang:
+        main_menu.add_cascade(label='Language', menu=lang_m)
+    trans.clear()
+    if keys_lang:
+        empty_menu = Menu()
+        window.config(menu=empty_menu)
+        empty_menu.add_cascade(label='Language', menu=lang_m)
+        # lang_m.destroy()
+        # lang_m.delete(0, END)
+        # lang_m.destroy()
+        # lang_m.destroy()
+        # for i in range(len(keys_lang)):
+        #     lang_m.delete(i)
+        # lang_m = Menu()
+        # main_menu.add_cascade(label='Language', menu=lang_m)
+        # window.config(menu=main_menu)
+
+    f = open("all_languages", encoding="utf-8")
+    data = f.read()
+    data = data.split('***\n')
+    keys_lang.clear()
+    # print(len(data))
+    for lang in data:
+        phrases = lang.split('...\n')
+        lang_title = phrases.pop(0)
+        keys_lang.append(lang_title)
+        trans[lang_title] = {}
+        for i in range(len(keys_trans)):
+            trans[lang_title][keys_trans[i]] = phrases[i]
+        lang_m.add_radiobutton(label=lang_title, variable=lang_now, value=lang_title)
+    f.close()
+    # print(trans)
+    window.after(20000, add_butts)
+
+
+
+
+# lang_m.add_radiobutton(label="English", variable=lang_now, value="English")
+# lang_m.add_radiobutton(label="Español", variable=lang_now, value="Español")
+# lang_m.add_radiobutton(label="中文", variable=lang_now, value="中文")
+# lang_m.add_radiobutton(label="Русский", variable=lang_now, value="Русский")
+
+add_butts()
+# add_butts()
+# print(trans)
+
 
 about_m = Menu()
 about_m.add_command(label="About us")
 
-main_menu.add_cascade(label='Language', menu=lang_m)
+
 main_menu.add_cascade(label='Help', menu=about_m)
 # OUTPUT area
 out = Entry(window, textvariable=ans, width=83, justify='right', relief='sunken', state='readonly')
