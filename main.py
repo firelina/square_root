@@ -1,3 +1,4 @@
+#coding=utf-8
 from tkinter import *
 import cmath
 import math
@@ -121,7 +122,7 @@ class CreateToolTip(object):
 
 
 keys_lang = []
-keys_trans = ["title", "text", 'del_num', 'del_per', 'lang', 'help', 'aboutus', 'enter_num_tip', 'enter_per_tip', 'input', 'ent_num']
+# keys_trans = ["title", "text", 'del_num', 'del_per', 'lang', 'help', 'aboutus', 'enter_num_tip', 'enter_per_tip', 'input', 'ent_num']
 
 # trans = {'English': {"title": 'Square root of a number', "text": 'Calculate', 'del_num': 'Remove number',
 #           'del_per': 'Remove precision', 'lang': 'Language', 'help': 'Help', 'aboutus': 'About us'}}
@@ -227,8 +228,8 @@ window.bind('<Key>', press_key)
 Creating elements
 '''
 
-lang_now = StringVar()
-lang_now.set('English')
+lang_now = IntVar()
+lang_now.set(0)
 lang_now.trace("w", lang_change)
 
 ans = StringVar()
@@ -257,14 +258,17 @@ def add_butts():
     data = data.split('***\n')
     keys_lang.clear()
     # print(len(data))
+    count = -1
     for lang in data:
+        count += 1
         phrases = lang.split('...\n')
-        lang_title = phrases.pop(0).strip()
+        lang_title = phrases.pop(0).split(':')[1].strip()
         keys_lang.append(lang_title)
-        trans[lang_title] = {}
-        for i in range(len(keys_trans)):
-            trans[lang_title][keys_trans[i]] = phrases[i]
-        lang_m.add_radiobutton(label=lang_title, variable=lang_now, value=lang_title)
+        trans[count] = {}
+        for i in range(len(phrases)):
+            key, val = phrases[i].split(':')
+            trans[count][key] = val
+        lang_m.add_radiobutton(label=lang_title, variable=lang_now, value=count)
     f.close()
     # print(trans)
     # window.after(5000, add_butts)

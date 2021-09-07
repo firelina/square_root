@@ -1,115 +1,115 @@
-English
+language:English
 ...
-Square root of a number
+title:Square root of a number
 ...
-Calculate
+text:Calculate
 ...
-Remove number
+del_num:Remove number
 ...
-Remove precision
+del_per:Remove precision
 ...
-Language
+lang:Language
 ...
-Help
+help:Help
 ...
-About us
+aboutus:About us
 ...
-Enter in this field the number whose square root you want to calculate.
+enter_num_tip:Enter in this field the number whose square root you want to calculate.
 Then click on the "Calculate" button.
 To work with complex numbers, use j, not i.
 To work with real numbers, use ".", not ","
 ...
-If you want to calculate the square root with the specified precision,
+enter_per_tip:If you want to calculate the square root with the specified precision,
 check the checkbox. After that, enter the precision with which
 you want to perform the calculations.
 ...
-Incorrect input
+input:Incorrect input
 ...
-Please, enter a number
+ent_num:Please, enter a number
 ***
-Русский
+language:Русский
 ...
-Вычисление квдратного корня числа
+title:Вычисление квдратного корня числа
 ...
-Вычислить
+text:Вычислить
 ...
-Удалить число
+del_num:Удалить число
 ...
-Очистить точность
+del_per:Очистить точность
 ...
-Язык
+lang:Язык
 ...
-Помощь
+help:Помощь
 ...
-О нас
+aboutus:О нас
 ...
-Введите в это поле число, корень квадратный которого надо
+enter_num_tip:Введите в это поле число, корень квадратный которого надо
 вычислить. Затем нажмите на кнопку "Вычислить". Чтобы
 работать с комплексными числами, используйте j вместо i.
 Чтобы работать с вещественными числами, используйте ".", а не ","
 ...
-Если вы хотите выполнить вычисление квадратного корня с
+enter_per_tip:Если вы хотите выполнить вычисление квадратного корня с
 заданной точностью, поставьте галочку в клеточку. После
 этого введите точность, с который вы хотите произвести вычисления.
 ...
-Неверный ввод
+input:Неверный ввод
 ...
-Пожалуйста, введите число
+ent_num:Пожалуйста, введите число
 ***
-Español
+language:Español
 ...
-Raíz cuadrada de un número
+title:Raíz cuadrada de un número
 ...
-Calcular
+text:Calcular
 ...
-Eliminar número
+del_num:Eliminar número
 ...
-Eliminar precisión
+del_per:Eliminar precisión
 ...
-Idioma
+lang:Idioma
 ...
-Asistencia
+help:Asistencia
 ...
-Sobre nosotros
+aboutus:Sobre nosotros
 ...
-Introduzca en este campo el número cuya raíz cuadrada desea calcular.
+enter_num_tip:Introduzca en este campo el número cuya raíz cuadrada desea calcular.
 A continuación, haga clic en el botón "Calcular".
 Para trabajar con números complejos, use j, no i.
 Para trabajar con números reales, use ".", No ","
 ...
-Si desea calcular la raíz cuadrada con la precisión especificada,
+enter_per_tip:Si desea calcular la raíz cuadrada con la precisión especificada,
 marca la casilla de verificación. Después de eso, introduzca la precisión con la que
 quieres hacer los cálculos.
 ...
-Entrada incorrecta
+input:Entrada incorrecta
 ...
-Por favor, introduzca un número
+ent_num:Por favor, introduzca un número
 ***
-中文
+language:中文
 ...
-数的平方根
+title:数的平方根
 ...
-计算
+text:计算
 ...
-删除编号
+del_num:删除编号
 ...
-删除精度
+del_per:删除精度
 ...
-语言
+lang:语言
 ...
-救命
+help:救命
 ...
-关于我们
+aboutus:关于我们
 ...
-在此字段中输入要计算其平方根的数字。
+enter_num_tip:在此字段中输入要计算其平方根的数字。
 然后点击"计算"按钮。
 要处理复数，请使用j，而不是i。
 要处理实数，请使用“.”，而不是“,”
 ...
-如果你想以指定的精度计算平方根，
+enter_per_tip:如果你想以指定的精度计算平方根，
 勾选复选框。 之后，输入精度与
 你想执行计算。
 ...
-输入不正确
+input:输入不正确
 ...
-请输入数字
+ent_num:请输入数字
