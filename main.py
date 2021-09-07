@@ -7,8 +7,7 @@ import math
 
 # Validating input values and calculating result value
 def calculate(num, prec):
-    dictt = {'input' : ['Incorrect input', 'Entrada incorrecta', '输入不正确', 'Неверный ввод'],
-             'ent_num' : ['Please, enter a number', 'Por favor, introduzca un número', '请输入数字', 'Пожалуйста, введите число']}
+
 
     if (state_.get() == True):
         try:
@@ -35,7 +34,8 @@ def calculate(num, prec):
                 else:
                     return '±' + str(sqrt)
         except ValueError:
-            return trans[lang_now.get()["ent_num"]]
+            print(lang_now.get())
+            return trans[lang_now.get().strip()]["ent_num"]
     else:
         try:
             res = math.sqrt(float(num))
@@ -61,7 +61,8 @@ def calculate(num, prec):
                     im = str(res.imag)
                     return '±' + re + '∓' + im + 'j'
             except ValueError:
-                return trans[lang_now.get()["ent_num"]]
+
+                return trans[lang_now.get()]["ent_num"]
 
 
 class CreateToolTip(object):
@@ -197,11 +198,11 @@ def add_butts():
     if not keys_lang:
         main_menu.add_cascade(label='Language', menu=lang_m)
     trans.clear()
-    if keys_lang:
-        empty_menu = Menu()
-        window.config(menu=empty_menu)
-        empty_menu.add_cascade(label='Language', menu=lang_m)
-        empty_menu.add_cascade(label='Help', menu=about_m)
+    # if keys_lang:
+    #     empty_menu = Menu()
+    #     window.config(menu=empty_menu)
+    #     empty_menu.add_cascade(label='Language', menu=lang_m)
+    #     empty_menu.add_cascade(label='Help', menu=about_m)
 
 
     f = open("all_languages", encoding="utf-8")
@@ -211,7 +212,7 @@ def add_butts():
     # print(len(data))
     for lang in data:
         phrases = lang.split('...\n')
-        lang_title = phrases.pop(0)
+        lang_title = phrases.pop(0).strip()
         keys_lang.append(lang_title)
         trans[lang_title] = {}
         for i in range(len(keys_trans)):
@@ -219,7 +220,7 @@ def add_butts():
         lang_m.add_radiobutton(label=lang_title, variable=lang_now, value=lang_title)
     f.close()
     # print(trans)
-    window.after(5000, add_butts)
+    # window.after(5000, add_butts)
 
 
 
