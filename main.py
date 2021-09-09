@@ -14,29 +14,20 @@ def calculate(num, prec):
         try:
             INPT = num
             INPT = float(INPT)
-
-            def x(n, INPT):
-                return (1 / 2) * (n + INPT / n)
-
-            sqrt = 0
-            n = 1
-            e = prec
-            e = float(e)
-            if (e < 0):
+            e = int(prec)
+            if INPT < 0:
                 return trans[lang_now.get()]["input"]
-            elif INPT < 0:
-                return trans[lang_now.get()]["input"]
+            tmp = math.sqrt(INPT)
+            res = round(tmp, e)
+            if(res == 0):
+                return str(0)
             else:
-                while abs(x(n, INPT) - n) > e:
-                    sqrt = x(n, INPT)
-                    n = sqrt
-                if (sqrt == 0):
-                    return str(0)
+                if(int(res) == float(res)):
+                    return '±' + str(int(res))
                 else:
-                    return '±' + str(sqrt)
+                    return '±' + str(res)
         except ValueError:
-            print(lang_now.get())
-            return trans[lang_now.get().strip()]["ent_num"]
+            return trans[lang_now.get()]["ent_num"]
     else:
         try:
             res = math.sqrt(float(num))
@@ -62,8 +53,25 @@ def calculate(num, prec):
                     im = str(res.imag)
                     return '±' + re + '∓' + im + 'j'
             except ValueError:
-
-                return trans[lang_now.get()]["ent_num"]
+                try:
+                    Ims = ''
+                    Rez = ''
+                    jfind = False
+                    for i in range(0,len(tmp)):
+                        if not(jfind) and tmp[i] != 'j':
+                            Ims += tmp[i]
+                        elif tmp[i] == 'j':
+                            jfind = True
+                        else: Rez += tmp[i]
+                    imsint = int(Ims)
+                    if Rez[0] =='-':
+                        rezint = -int(Rez[1:])
+                    else:
+                        rezint = int(Rez)
+                    com = cmath.sqrt(complex(rezint,imsint))
+                    return '±' + str(com.real) + '∓' + str(com.imag) + 'j'
+                except ValueError:
+                    return trans[lang_now.get()]["ent_num"]
 
 
 class CreateToolTip(object):
