@@ -3,10 +3,13 @@ from tkinter import *
 import cmath
 import math
 
+import math
+import cmath
+
 
 # Validating input values and calculating result value
 def calculate(num, prec):
-    if (state_.get() == True):
+    if state_.get():
         try:
             INPT = num
             INPT = float(INPT)
@@ -78,7 +81,7 @@ class CreateToolTip(object):
 
     def __init__(self, widget, text='widget info'):
         self.waittime = 100  # miliseconds
-        self.wraplength = 180  # pixels
+        self.wraplength = 300  # pixels
         self.widget = widget
         self.text = text
         self.widget.bind("<Enter>", self.enter)
@@ -139,8 +142,7 @@ def lang_change(*args):
     # print(lang_now.get())
     window.title(trans[lang_now.get()]["title"])
     btn['text'] = trans[lang_now.get()]["text"]
-    btn_del_all['text'] = trans[lang_now.get()]["del_num"]
-    btn_del_all_per['text'] = trans[lang_now.get()]["del_per"]
+    # btn_del_all_per['text'] = trans[lang_now.get()]["del_per"]
     main_menu.entryconfig(1, label=trans[lang_now.get()]["lang"])
     main_menu.entryconfig(2, label=trans[lang_now.get()]["help"])
     about_m.entryconfig(1, label=trans[lang_now.get()]["aboutus"])
@@ -154,13 +156,30 @@ def lang_change(*args):
 def clear():
     txt['state'] = 'normal'
     txt.delete(0, 'end')
+    txt.insert(0, 0)
     txt['state'] = 'readonly'
 
 
-def clearper():
+def clear_per():
     set_prec['state'] = 'normal'
     set_prec.delete(0, 'end')
+    set_prec.insert(0,0)
     set_prec['state'] = 'readonly'
+
+
+def clear_last_symbol():
+    if state_.get():
+        set_prec['state'] = 'normal'
+        set_prec.delete(len(set_prec.get()) - 1, len(set_prec.get()))
+        if len(set_prec.get()) == 0:
+            set_prec.insert(0,0)
+        set_prec['state'] = 'readonly'
+    else:
+        txt['state'] = 'normal'
+        txt.delete(len(txt.get()) - 1, len(txt.get()))
+        if len(txt.get()) == 0:
+            txt.insert(0, 0)
+        txt['state'] = 'readonly'
 
 
 # start_calc
@@ -179,11 +198,18 @@ def set_number_symbol(value):
 
 
 def set_prec_symbol(value):
-    set_prec['state'] = 'normal'
-    set_prec.delete(0, 'end')
-    set_prec.insert(0, value)
-    set_prec['state'] = 'readonly'
-
+    if len(value) == 0:
+        set_prec['state'] = 'normal'
+        set_prec.delete(0, 'end')
+        set_prec.insert(0, value)
+        set_prec['state'] = 'readonly'
+    elif getint(value) < 16 :
+         set_prec['state'] = 'normal'
+         if value[0] == '0':
+             value=value[1:]
+         set_prec.delete(0, 'end')
+         set_prec.insert(0, value)
+         set_prec['state'] = 'readonly'
 
 # key_events
 
@@ -194,122 +220,107 @@ def press_key(event):
         elif event.char == '\x08':
             value = txt.get()
             value = value[:-1]
+            if len(value)== 0:
+                value = '0'
             set_number_symbol(value)
-        elif event.char.isdigit() or event.char in '+-..j':
+        elif event.char.isdigit() or event.char in '+-..j*^,/()':
             value = txt.get() + event.char
-            if event.char.isdigit():
-                set_number_symbol(value)
-            elif len(value) > 1 and value[-1] == value[-2]:
-                value = value[:-1]
-            elif len(value) > 1 and value[-2] == '-' and value[-1] == '+':
-                value = value[:-2] + '+'
-            elif len(value) > 1 and value[-2] == '+' and value[-1] == '-':
-                value = value[:-2] + '-'
+            if value[0] == '0':
+                value = value[1:]
+            if not event.char.isdigit():
+                if len(value) > 1 and value[-1] == value[-2]:
+                    value = value[:-1]
+                elif len(value) > 1 and value[-2] == '.' and value[-1] == ',':
+                    value = value[:-2] + ','
+                elif len(value) > 1 and value[-2] == ',' and value[-1] == '.':
+                    value = value[:-2] + '.'
+                elif len(value) > 1 and value[-2] == '(' and value[-1] == ')':
+                    value = value[:-2] + ')'
+                elif len(value) > 1 and value[-2] == ')' and value[-1] == '(':
+                    value = value[:-2] + '('
+                elif len(value)> 1 and value[-2] in '-+*/^' and event.char in '-+*/^':
+                    value=value[:-2] + event.char
             set_number_symbol(value)
     else:
         if event.char == '\x08':
             value = set_prec.get()
             value = value[:-1]
-            set_prec_symbol(value)
+            if len(value) > 0:
+                set_prec_symbol(value)
+            else:
+                set_prec['state'] = 'normal'
+                set_prec.delete(0, 'end')
+                set_prec.insert(0, 0)
+                set_prec['state'] = 'readonly'
         elif event.char == '\r':
             clicked()
         elif event.char.isdigit():
             set_prec_symbol(set_prec.get() + event.char)
-        elif event.char in '..':
-            value = set_prec.get() + event.char
-            if len(value) > 1 and value[-1] == value[-2]:
-                value = value[:-1]
-            set_prec_symbol(value)
 
+# Work with on-screen buttons
+
+def disable_button():
+    if state_.get():
+        btn_sin['state'] = 'disable'
+        btn_cos['state'] = 'disable'
+        btn_tan['state'] = 'disable'
+        btn_comma['state'] = 'disable'
+        btn_pi['state'] = 'disable'
+        btn_imaginary_unit['state'] = 'disable'
+        btn_ln['state'] = 'disable'
+        btn_log['state'] = 'disable'
+        btn_left_parenthesis['state'] = 'disable'
+        btn_right_parenthesis['state'] = 'disable'
+        btn_exponentiation['state'] = 'disable'
+        btn_module['state'] = 'disable'
+        btn_factorial['state'] = 'disable'
+        btn_dot['state'] = 'disable'
+        btn_plus['state'] = 'disable'
+        btn_minus['state'] = 'disable'
+        btn_multiplication['state'] = 'disable'
+        btn_division['state'] = 'disable'
+        btn_clean_entry['state'] = 'disable'
+    else:
+        btn_sin['state'] = 'active'
+        btn_cos['state'] = 'active'
+        btn_tan['state'] = 'active'
+        btn_comma['state'] = 'active'
+        btn_pi['state'] = 'active'
+        btn_imaginary_unit['state'] = 'active'
+        btn_ln['state'] = 'active'
+        btn_log['state'] = 'active'
+        btn_left_parenthesis['state'] = 'active'
+        btn_right_parenthesis['state'] = 'active'
+        btn_exponentiation['state'] = 'active'
+        btn_module['state'] = 'active'
+        btn_factorial['state'] = 'active'
+        btn_dot['state'] = 'active'
+        btn_plus['state'] = 'active'
+        btn_minus['state'] = 'active'
+        btn_multiplication['state'] = 'active'
+        btn_division['state'] = 'active'
+        btn_clean_entry['state'] = 'active'
+        btn_delete_last_symbol['state'] = 'active'
+
+
+def add_symbol(symbol):
+    if state_.get():
+        value = set_prec.get() + str(symbol)
+        set_prec_symbol(value)
+    else:
+        value = txt.get() + str(symbol)
+        if value[0]=='0':
+            value=value[1:]
+        set_number_symbol(value)
 
 # create_buttons_calculate
-def create_buttons():
-    
-    btn_sin = Button(width=3, text='sin')
-    btn_cos = Button(width=3, text='cos')
-    btn_tan = Button(width=3, text='tan')
-    btn_cot = Button(width=3, text='cot')
-    btn_pi = Button(width=3, text='π')
-    btn_imaginary_unit = Button(width=3, text='j')
-    btn_ln = Button(width=3, text='ln')
-    btn_log = Button(width=3, text='log')
-    btn_left_parenthesis = Button(width=3, text='(')
-    btn_right_parenthesis = Button(width=3, text=')')
-    btn_exponentiation = Button(width=3, text='^')
-    btn_module = Button(width=3, text='|x|')
-    btn_factorial = Button(width=3, text='n!')
-    btn_dot = Button(width=3, text='.')
-    btn_plus = Button(width=3, text='+')
-    btn_minus = Button(width=3, text='-')
-    btn_multiplication = Button(width=3, text='*')
-    btn_division = Button(width=3, text='/')
-    btn_clean_entry = Button(width=3,text='CE')
-    btn_delete_last_symbol = Button(width=3, text='⇐')
+# def create_buttons():
 
-
-    btn_digit_1 = Button(width=3, text='1')
-    btn_digit_2 = Button(width=3, text='2')
-    btn_digit_3 = Button(width=3, text='3')
-    btn_digit_4 = Button(width=3, text='4')
-    btn_digit_5 = Button(width=3, text='5')
-    btn_digit_6 = Button(width=3, text='6')
-    btn_digit_7 = Button(width=3, text='7')
-    btn_digit_8 = Button(width=3, text='8')
-    btn_digit_9 = Button(width=3, text='9')
-    btn_digit_0 = Button(width=3, text='0')
-
-    # first_floor_digits
-
-    btn_digit_1.place(x=195, y=120)
-    btn_digit_2.place(x=230, y=120)
-    btn_digit_3.place(x=265, y=120)
-
-    # second_floor_digits
-
-    btn_digit_4.place(x=195, y=150)
-    btn_digit_5.place(x=230, y=150)
-    btn_digit_6.place(x=265, y=150)
-
-    # third_floor_digits
-
-    btn_digit_7.place(x=195, y=180)
-    btn_digit_8.place(x=230, y=180)
-    btn_digit_9.place(x=265, y=180)
-
-    # first_floor_operations
-
-    btn_sin.place(x=20, y=120)
-    btn_cos.place(x=55, y=120)
-    btn_tan.place(x=90, y=120)
-    btn_cot.place(x=125, y=120)
-    btn_digit_0.place(x=160, y=120)
-    btn_clean_entry.place(x=300,y=120)
-    btn_delete_last_symbol.place(x=335,y=120)
-
-    # second_floor_operations
-
-    btn_pi.place(x=20, y=150)
-    btn_imaginary_unit.place(x=55, y=150)
-    btn_ln.place(x=90, y=150)
-    btn_log.place(x=125, y=150)
-    btn_module.place(x=160, y=150)
-    btn_multiplication.place(x=300, y=150)
-    btn_division.place(x=335,y=150)
-
-    # third_floor_operations
-
-    btn_left_parenthesis.place(x=20, y=180)
-    btn_right_parenthesis.place(x=55, y=180)
-    btn_dot.place(x=90, y=180)
-    btn_exponentiation.place(x=125, y=180)
-    btn_factorial.place(x=160,y=180)
-    btn_plus.place(x=300,y=180)
-    btn_minus.place(x=335,y=180)
 
 # Creating window
 
 window = Tk()
-window.geometry('500x300')
+window.geometry('500x190')
 window.resizable(width=False, height=False)
 window.title('Square root of a number')
 photo = PhotoImage(file='logo.png')
@@ -364,45 +375,124 @@ main_menu.add_cascade(label='Help', menu=about_m)
 out = Entry(window, textvariable=ans, width=83, justify='right', relief='sunken', state='readonly')
 out.place(x=0, y=0)
 # INPUT area
-txt = Entry(window, width=30, justify='right', state='readonly')
-txt.place(x=20, y=60)
+txt = Entry(window, width=78,justify='right')
+txt.insert(0,0)
+txt['state'] = 'readonly'
+txt.place(x=15, y=45)
 INPT_TIP = CreateToolTip(txt, \
-                         'Enter in this field the number whose square root you want to calculate. '
+                         'Enter in this field the number/expression whose square root you want to calculate. '
                          'Then click on the "Calculate" button. '
                          'To work with complex numbers, use j, not i. ')
 
 # Calculate with given PRECISION
 state_ = BooleanVar()
 state_.set(0)
-chk = Checkbutton(window, variable=state_, onvalue=1, offvalue=0)
-chk.place(x=300, y=60)
+chk = Checkbutton(window, variable=state_, onvalue=1, offvalue=0, command=disable_button)
+chk.place(x=375, y=111)
 # Entry for PREC
-set_prec = Entry(window, width=22, relief='sunken', state='readonly', justify='right')
-set_prec.place(x=320, y=60)
+set_prec = Entry(window, width=5,  relief='sunken', justify='right')
+set_prec.insert(0,0)
+set_prec['state'] = 'readonly',
+set_prec.place(x=400, y=111)
 ###TIP for USER
 loadimage = PhotoImage(file='yes4.png')
 defaultbg = window.cget('bg')
 tipBtn = Button(window, image=loadimage, bg=defaultbg, state='disabled')
 tipBtn['border'] = '0'
-tipBtn.place(x=460, y=73)
+tipBtn.place(x=450, y=102)
 button1_ttp = CreateToolTip(tipBtn, \
                             'If you want to calculate the square root with the specified precision,'
                             'check the checkbox. After that, enter the precision with which '
                             'you want to perform the calculations. ')
 
-# create_clear_button
-btn_del_all = Button(window, text='Remove number', command=clear)
-btn_del_all.place(x=95, y=83)
+btn_sin = Button(width=3, text='sin', command=lambda: add_symbol('sin'))
+btn_cos = Button(width=3, text='cos', command=lambda: add_symbol('cos'))
+btn_tan = Button(width=3, text='tan', command=lambda: add_symbol('tan'))
+btn_comma = Button(width=3, text=',', command=lambda: add_symbol(','))
+btn_pi = Button(width=3, text='π', command=lambda: add_symbol('π'))
+btn_imaginary_unit = Button(width=3, text='j', command=lambda: add_symbol('j'))
+btn_ln = Button(width=3, text='ln', command=lambda: add_symbol('ln'))
+btn_log = Button(width=3, text='log', command=lambda: add_symbol('log'))
+btn_left_parenthesis = Button(width=3, text='(', command=lambda: add_symbol('('))
+btn_right_parenthesis = Button(width=3, text=')', command=lambda: add_symbol(')'))
+btn_exponentiation = Button(width=3, text='^', command=lambda: add_symbol('^'))
+btn_module = Button(width=3, text='|x|', command=lambda: add_symbol('|'))
+btn_factorial = Button(width=3, text='n!', command=lambda: add_symbol('!'))
+btn_dot = Button(width=3, text='.', command=lambda: add_symbol('.'))
+btn_plus = Button(width=3, text='+', command=lambda: add_symbol('+'))
+btn_minus = Button(width=3, text='-', command=lambda: add_symbol('-'))
+btn_multiplication = Button(width=3, text='*', command=lambda: add_symbol('*'))
+btn_division = Button(width=3, text='/', command=lambda: add_symbol('/'))
+btn_clean_entry = Button(width=3, text='CE', command= clear)
+btn_delete_last_symbol = Button(width=3, text='⇐', command=clear_last_symbol)
 
-btn_del_all_per = Button(window, text='Remove precision', command=clearper)
-btn_del_all_per.place(x=320, y=83)
+btn_digit_1 = Button(width=3, text='1', command=lambda: add_symbol('1'))
+btn_digit_2 = Button(width=3, text='2', command=lambda: add_symbol('2'))
+btn_digit_3 = Button(width=3, text='3', command=lambda: add_symbol('3'))
+btn_digit_4 = Button(width=3, text='4', command=lambda: add_symbol('4'))
+btn_digit_5 = Button(width=3, text='5', command=lambda: add_symbol('5'))
+btn_digit_6 = Button(width=3, text='6', command=lambda: add_symbol('6'))
+btn_digit_7 = Button(width=3, text='7', command=lambda: add_symbol('7'))
+btn_digit_8 = Button(width=3, text='8', command=lambda: add_symbol('8'))
+btn_digit_9 = Button(width=3, text='9', command=lambda: add_symbol('9'))
+btn_digit_0 = Button(width=3, text='0', command=lambda: add_symbol('0'))
+
+# first_floor_digits
+
+btn_digit_1.place(x=195, y=75)
+btn_digit_2.place(x=230, y=75)
+btn_digit_3.place(x=265, y=75)
+
+# second_floor_digits
+
+btn_digit_4.place(x=195, y=105)
+btn_digit_5.place(x=230, y=105)
+btn_digit_6.place(x=265, y=105)
+
+# third_floor_digits
+
+btn_digit_7.place(x=195, y=135)
+btn_digit_8.place(x=230, y=135)
+btn_digit_9.place(x=265, y=135)
+
+# first_floor_operations
+
+btn_sin.place(x=20, y=75)
+btn_cos.place(x=55, y=75)
+btn_tan.place(x=90, y=75)
+btn_exponentiation.place(x=125, y=75)
+btn_digit_0.place(x=160, y=75)
+btn_clean_entry.place(x=300, y=75)
+btn_delete_last_symbol.place(x=335, y=75)
+
+# second_floor_operations
+
+btn_pi.place(x=20, y=105)
+btn_imaginary_unit.place(x=55, y=105)
+btn_ln.place(x=90, y=105)
+btn_factorial.place(x=125, y=105)
+btn_comma.place(x=160, y=105)
+btn_multiplication.place(x=300, y=105)
+btn_division.place(x=335, y=105)
+
+# third_floor_operations
+
+btn_left_parenthesis.place(x=20, y=135)
+btn_right_parenthesis.place(x=55, y=135)
+btn_log.place(x=90, y=135)
+btn_module.place(x=125, y=135)
+btn_dot.place(x=160, y=135)
+btn_plus.place(x=300, y=135)
+btn_minus.place(x=335, y=135)
+
+# create_clear_button
+
+btn_del_all_per = Button(window, text='Remove precision', width=15, command=clear_per)
+btn_del_all_per.place(x=370, y=135)
 
 # create_calculate_button
-btn = Button(window, text='√', command=clicked)
-btn.place(x=20, y=83)
-
-# create_buttons
-create_buttons()
+btn = Button(window, text='Calculate ', width=15, command=clicked)
+btn.place(x=370, y=75)
 
 window.config(menu=main_menu)
 window.mainloop()
