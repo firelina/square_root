@@ -1,15 +1,11 @@
-#coding=utf-8
+# coding=utf-8
 from tkinter import *
 import cmath
 import math
 
 
-
-
 # Validating input values and calculating result value
 def calculate(num, prec):
-
-
     if (state_.get() == True):
         try:
             INPT = num
@@ -19,10 +15,10 @@ def calculate(num, prec):
                 return trans[lang_now.get()]["input"]
             tmp = math.sqrt(INPT)
             res = round(tmp, e)
-            if(res == 0):
+            if (res == 0):
                 return str(0)
             else:
-                if(int(res) == float(res)):
+                if (int(res) == float(res)):
                     return '±' + str(int(res))
                 else:
                     return '±' + str(res)
@@ -57,18 +53,19 @@ def calculate(num, prec):
                     Ims = ''
                     Rez = ''
                     jfind = False
-                    for i in range(0,len(tmp)):
-                        if not(jfind) and tmp[i] != 'j':
+                    for i in range(0, len(tmp)):
+                        if not (jfind) and tmp[i] != 'j':
                             Ims += tmp[i]
                         elif tmp[i] == 'j':
                             jfind = True
-                        else: Rez += tmp[i]
+                        else:
+                            Rez += tmp[i]
                     imsint = int(Ims)
-                    if Rez[0] =='-':
+                    if Rez[0] == '-':
                         rezint = -int(Rez[1:])
                     else:
                         rezint = int(Rez)
-                    com = cmath.sqrt(complex(rezint,imsint))
+                    com = cmath.sqrt(complex(rezint, imsint))
                     return '±' + str(com.real) + '∓' + str(com.imag) + 'j'
                 except ValueError:
                     return trans[lang_now.get()]["ent_num"]
@@ -135,6 +132,7 @@ keys_lang = []
 # trans = {'English': {"title": 'Square root of a number', "text": 'Calculate', 'del_num': 'Remove number',
 #           'del_per': 'Remove precision', 'lang': 'Language', 'help': 'Help', 'aboutus': 'About us'}}
 trans = {}
+
 
 # TRANSLATE
 def lang_change(*args):
@@ -218,15 +216,100 @@ def press_key(event):
         elif event.char.isdigit():
             set_prec_symbol(set_prec.get() + event.char)
         elif event.char in '..':
-            value=set_prec.get() + event.char
+            value = set_prec.get() + event.char
             if len(value) > 1 and value[-1] == value[-2]:
-                value=value[:-1]
+                value = value[:-1]
             set_prec_symbol(value)
 
 
+# create_buttons_calculate
+def create_buttons():
+    
+    btn_sin = Button(width=3, text='sin')
+    btn_cos = Button(width=3, text='cos')
+    btn_tan = Button(width=3, text='tan')
+    btn_cot = Button(width=3, text='cot')
+    btn_pi = Button(width=3, text='π')
+    btn_imaginary_unit = Button(width=3, text='j')
+    btn_ln = Button(width=3, text='ln')
+    btn_log = Button(width=3, text='log')
+    btn_left_parenthesis = Button(width=3, text='(')
+    btn_right_parenthesis = Button(width=3, text=')')
+    btn_exponentiation = Button(width=3, text='^')
+    btn_module = Button(width=3, text='|x|')
+    btn_factorial = Button(width=3, text='n!')
+    btn_dot = Button(width=3, text='.')
+    btn_plus = Button(width=3, text='+')
+    btn_minus = Button(width=3, text='-')
+    btn_multiplication = Button(width=3, text='*')
+    btn_division = Button(width=3, text='/')
+    btn_clean_entry = Button(width=3,text='CE')
+    btn_delete_last_symbol = Button(width=3, text='⇐')
+
+
+    btn_digit_1 = Button(width=3, text='1')
+    btn_digit_2 = Button(width=3, text='2')
+    btn_digit_3 = Button(width=3, text='3')
+    btn_digit_4 = Button(width=3, text='4')
+    btn_digit_5 = Button(width=3, text='5')
+    btn_digit_6 = Button(width=3, text='6')
+    btn_digit_7 = Button(width=3, text='7')
+    btn_digit_8 = Button(width=3, text='8')
+    btn_digit_9 = Button(width=3, text='9')
+    btn_digit_0 = Button(width=3, text='0')
+
+    # first_floor_digits
+
+    btn_digit_1.place(x=195, y=120)
+    btn_digit_2.place(x=230, y=120)
+    btn_digit_3.place(x=265, y=120)
+
+    # second_floor_digits
+
+    btn_digit_4.place(x=195, y=150)
+    btn_digit_5.place(x=230, y=150)
+    btn_digit_6.place(x=265, y=150)
+
+    # third_floor_digits
+
+    btn_digit_7.place(x=195, y=180)
+    btn_digit_8.place(x=230, y=180)
+    btn_digit_9.place(x=265, y=180)
+
+    # first_floor_operations
+
+    btn_sin.place(x=20, y=120)
+    btn_cos.place(x=55, y=120)
+    btn_tan.place(x=90, y=120)
+    btn_cot.place(x=125, y=120)
+    btn_digit_0.place(x=160, y=120)
+    btn_clean_entry.place(x=300,y=120)
+    btn_delete_last_symbol.place(x=335,y=120)
+
+    # second_floor_operations
+
+    btn_pi.place(x=20, y=150)
+    btn_imaginary_unit.place(x=55, y=150)
+    btn_ln.place(x=90, y=150)
+    btn_log.place(x=125, y=150)
+    btn_module.place(x=160, y=150)
+    btn_multiplication.place(x=300, y=150)
+    btn_division.place(x=335,y=150)
+
+    # third_floor_operations
+
+    btn_left_parenthesis.place(x=20, y=180)
+    btn_right_parenthesis.place(x=55, y=180)
+    btn_dot.place(x=90, y=180)
+    btn_exponentiation.place(x=125, y=180)
+    btn_factorial.place(x=160,y=180)
+    btn_plus.place(x=300,y=180)
+    btn_minus.place(x=335,y=180)
+
 # Creating window
+
 window = Tk()
-window.geometry('500x130')
+window.geometry('500x300')
 window.resizable(width=False, height=False)
 window.title('Square root of a number')
 photo = PhotoImage(file='logo.png')
@@ -247,25 +330,16 @@ ans.set('')
 main_menu = Menu()
 
 
-# files = ['eng', 'spn', 'rus', 'cha']
-
 def add_butts():
     lang_m = Menu()
     if not keys_lang:
         main_menu.add_cascade(label='Language', menu=lang_m)
     trans.clear()
-    # if keys_lang:
-    #     empty_menu = Menu()
-    #     window.config(menu=empty_menu)
-    #     empty_menu.add_cascade(label='Language', menu=lang_m)
-    #     empty_menu.add_cascade(label='Help', menu=about_m)
-
 
     f = open("all_languages", encoding="utf-8")
     data = f.read()
     data = data.split('***\n')
     keys_lang.clear()
-    # print(len(data))
     count = -1
     for lang in data:
         count += 1
@@ -278,21 +352,9 @@ def add_butts():
             trans[count][key] = val.strip()
         lang_m.add_radiobutton(label=lang_title, variable=lang_now, value=count)
     f.close()
-    # print(trans)
-    # window.after(5000, add_butts)
 
-
-
-
-# lang_m.add_radiobutton(label="English", variable=lang_now, value="English")
-# lang_m.add_radiobutton(label="Español", variable=lang_now, value="Español")
-# lang_m.add_radiobutton(label="中文", variable=lang_now, value="中文")
-# lang_m.add_radiobutton(label="Русский", variable=lang_now, value="Русский")
 
 add_butts()
-# add_butts()
-# print(trans)
-
 
 about_m = Menu()
 about_m.add_command(label="About us")
@@ -314,7 +376,7 @@ state_ = BooleanVar()
 state_.set(0)
 chk = Checkbutton(window, variable=state_, onvalue=1, offvalue=0)
 chk.place(x=300, y=60)
-##Entry for PREC
+# Entry for PREC
 set_prec = Entry(window, width=22, relief='sunken', state='readonly', justify='right')
 set_prec.place(x=320, y=60)
 ###TIP for USER
@@ -328,17 +390,19 @@ button1_ttp = CreateToolTip(tipBtn, \
                             'check the checkbox. After that, enter the precision with which '
                             'you want to perform the calculations. ')
 
-# CLEAR BUTTON
+# create_clear_button
 btn_del_all = Button(window, text='Remove number', command=clear)
 btn_del_all.place(x=95, y=83)
 
 btn_del_all_per = Button(window, text='Remove precision', command=clearper)
 btn_del_all_per.place(x=320, y=83)
 
-
-# Creating BUTTON
-btn = Button(window, text='Calculate', command=clicked)
+# create_calculate_button
+btn = Button(window, text='√', command=clicked)
 btn.place(x=20, y=83)
+
+# create_buttons
+create_buttons()
 
 window.config(menu=main_menu)
 window.mainloop()
