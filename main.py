@@ -8,8 +8,7 @@ import math
 
 # Validating input values and calculating result value
 def calculate(num, prec):
-
-
+    num = simple_actions(num)
     if (state_.get() == True):
         try:
             INPT = num
@@ -72,6 +71,133 @@ def calculate(num, prec):
                     return '±' + str(com.real) + '∓' + str(com.imag) + 'j'
                 except ValueError:
                     return trans[lang_now.get()]["ent_num"]
+
+
+def simple_actions(string):
+    try:
+
+        if 'π' in string:
+            string = string.split('π')
+            string = ('math.pi').join(string)
+        if '|' in string:
+            while'|' in string:
+                ind = string.index('|')
+                string = string[:ind] + 'abs(' + string[ind + 1:]
+                ind += 4
+                while True:
+
+                    if ind >= len(string) or string[ind] not in '-1234567890':
+                        break
+                    ind += 1
+
+                string = string[:ind] + ')' + string[ind + 1:]
+
+        if '^' in string:
+            string = string.split('^')
+            string = ('**').join(string)
+        if 'log' in string:
+            while 'log(' in string:
+                ind = string.index('log(')
+                string = string[:ind] + 'math.log_(' + string[ind + 4:]
+            # ind = string.index(')')
+            string = ('').join(string.split('_'))
+        if 'ln' in string:
+            while 'ln(' in string:
+
+                ind = string.index('ln(')
+                string = string[:ind] + 'math.log1p_(' + string[ind + 3:]
+
+            # ind = string.index(')')
+            string = ('').join(string.split('_'))
+
+        if 'cos' in string:
+
+            while 'cos(' in string:
+                ind = string.index('cos(')
+                ind1 = string.index('cos(') + 4
+                while True:
+
+                    if ind1 >= len(string) or string[ind1] not in '-1234567890':
+                        break
+                    ind1 += 1
+
+                string = string[:ind1] + ')' + string[ind1:]
+                string = string[:ind] + 'math.cos_(' + 'math.radians(' + string[ind + 4:]
+                # ind = string.index('sin_(math.radians(') + len('sin_(math.radians(')
+
+            string = ('').join(string.split('_'))
+        if 'sin' in string:
+
+            while 'sin(' in string:
+                ind = string.index('sin(')
+                ind1 = string.index('sin(') + 4
+                while True:
+
+                    if ind1 >= len(string) or string[ind1] not in '-1234567890':
+                        break
+                    ind1 += 1
+
+                string = string[:ind1] + ')' + string[ind1:]
+                string = string[:ind] + 'math.sin_(' + 'math.radians(' + string[ind + 4:]
+                # ind = string.index('sin_(math.radians(') + len('sin_(math.radians(')
+
+            string = ('').join(string.split('_'))
+        if 'tan' in string:
+            while 'tan(' in string:
+                ind = string.index('tan(')
+                ind1 = string.index('tan(') + 4
+                while True:
+
+                    if ind1 >= len(string) or string[ind1] not in '-1234567890':
+                        break
+                    ind1 += 1
+
+                string = string[:ind1] + ')' + string[ind1:]
+                string = string[:ind] + 'math.tan_(' + 'math.radians(' + string[ind + 4:]
+
+                # ind = string.index('tan(math.radians(') + len('tan(math.radians(')
+            string = ('').join(string.split('_'))
+
+        if 'cot' in string:
+            while 'cot(' in string:
+                ind = string.index('cot(')
+                ind1 = string.index('cot(') + 4
+                while True:
+
+                    if ind1 >= len(string) or string[ind1] not in '-1234567890':
+                        break
+                    ind1 += 1
+
+                string = string[:ind1] + ')' + string[ind1:]
+                string = string[:ind] + '1/math.tan(' + 'math.radians(' + string[ind + 4:]
+
+                # ind = string.index('tan(math.radians(') + len('tan(math.radians(')
+            string = ('').join(string.split('_'))
+
+        if '!' in string:
+            while '!' in string:
+                ind = string.index('!') - 1
+                ind1 = string.index('!')
+                # string = string.split('!')
+                num = ''
+                while True:
+                    if ind < 0 or string[ind] not in '-1234567890':
+                        break
+                    num += string[ind]
+                    ind -= 1
+
+                num = num[::-1]
+                string = string[:ind + 1] + 'math.factorial(' + num + ')' + string[ind1 + 1:]
+
+
+        # string = ('))').join(string.split('#'))
+        # print(string)
+        res = eval(string)
+        return res
+    except ValueError:
+        # print(string)
+        return trans[lang_now.get()]["ent_num"]
+
 
 
 class CreateToolTip(object):
@@ -167,9 +293,14 @@ def clearper():
 
 # start_calc
 def clicked():
+    # txt.insert(len(txt.get()), "+")
     num = txt.get()
     prec = set_prec.get()
-    ans.set(calculate(num, prec))
+    calculate(num, prec)
+
+def set_result(result):
+    ans.set(result)
+
 
 
 #   set_symbol_functions
@@ -304,6 +435,7 @@ out.place(x=0, y=0)
 # INPUT area
 txt = Entry(window, width=30, justify='right', state='readonly')
 txt.place(x=20, y=60)
+
 INPT_TIP = CreateToolTip(txt, \
                          'Enter in this field the number whose square root you want to calculate. '
                          'Then click on the "Calculate" button. '
