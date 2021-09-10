@@ -275,7 +275,7 @@ def add_butts():
         trans[count] = {}
         for i in range(len(phrases)):
             key, val = phrases[i].split(':')
-            trans[count][key] = val
+            trans[count][key] = val.strip()
         lang_m.add_radiobutton(label=lang_title, variable=lang_now, value=count)
     f.close()
     # print(trans)
