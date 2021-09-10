@@ -86,7 +86,7 @@ def simple_actions(string):
                 ind += 4
                 while True:
 
-                    if ind >= len(string) or string[ind] not in '-1234567890':
+                    if ind >= len(string) or string[ind] not in '-1234567890.':
                         break
                     ind += 1
 
@@ -98,7 +98,22 @@ def simple_actions(string):
         if 'log' in string:
             while 'log(' in string:
                 ind = string.index('log(')
-                string = string[:ind] + 'math.log_(' + string[ind + 4:]
+                ind1 = string.index('log(') + 4
+
+                comp = False
+                while string[ind1] != ')':
+                    comp = True if string[ind1] == 'j' else False
+
+                    # if ind1 >= len(string) or string[ind1] not in '-1234567890.':
+                    #     break
+                    ind1 += 1
+
+                if not comp:
+                    string = string[:ind] + 'math.log_(' + string[ind + 4:]
+                if comp:
+                    string = string[:ind] + 'cmath.log_(' + string[ind + 4:]
+
+
             # ind = string.index(')')
             string = ('').join(string.split('_'))
         if 'ln' in string:
@@ -115,15 +130,19 @@ def simple_actions(string):
             while 'cos(' in string:
                 ind = string.index('cos(')
                 ind1 = string.index('cos(') + 4
-                while True:
+                comp = False
+                while string[ind1] != ')':
+                    comp = True if string[ind1] == 'j' else False
 
-                    if ind1 >= len(string) or string[ind1] not in '-1234567890':
-                        break
+                    # if ind1 >= len(string) or string[ind1] not in '-1234567890.':
+                    #     break
                     ind1 += 1
 
-                string = string[:ind1] + ')' + string[ind1:]
-                string = string[:ind] + 'math.cos_(' + 'math.radians(' + string[ind + 4:]
-                # ind = string.index('sin_(math.radians(') + len('sin_(math.radians(')
+                string = string[:ind1] + ')' + string[ind1:] if not comp else string
+                if not comp:
+                    string = string[:ind] + 'math.cos_(' + 'math.radians(' + string[ind + 4:]
+                if comp:
+                    string = string[:ind] + 'cmath.cos_(' + string[ind + 4:]
 
             string = ('').join(string.split('_'))
         if 'sin' in string:
@@ -131,48 +150,57 @@ def simple_actions(string):
             while 'sin(' in string:
                 ind = string.index('sin(')
                 ind1 = string.index('sin(') + 4
-                while True:
+                comp = False
+                while string[ind1] != ')':
+                    comp = True if string[ind1] == 'j' else False
 
-                    if ind1 >= len(string) or string[ind1] not in '-1234567890':
-                        break
+                    # if ind1 >= len(string) or string[ind1] not in '-1234567890.':
+                    #     break
                     ind1 += 1
 
-                string = string[:ind1] + ')' + string[ind1:]
-                string = string[:ind] + 'math.sin_(' + 'math.radians(' + string[ind + 4:]
-                # ind = string.index('sin_(math.radians(') + len('sin_(math.radians(')
+                string = string[:ind1] + ')' + string[ind1:] if not comp else string
+                if not comp:
+                    string = string[:ind] + 'math.sin_(' + 'math.radians(' + string[ind + 4:]
+                if comp:
+                    string = string[:ind] + 'cmath.sin_(' + string[ind + 4:]
 
             string = ('').join(string.split('_'))
         if 'tan' in string:
             while 'tan(' in string:
                 ind = string.index('tan(')
                 ind1 = string.index('tan(') + 4
-                while True:
+                comp = False
+                while string[ind1] != ')':
+                    comp = True if string[ind1] == 'j' else False
 
-                    if ind1 >= len(string) or string[ind1] not in '-1234567890':
-                        break
+                    # if ind1 >= len(string) or string[ind1] not in '-1234567890.':
+                    #     break
                     ind1 += 1
 
-                string = string[:ind1] + ')' + string[ind1:]
-                string = string[:ind] + 'math.tan_(' + 'math.radians(' + string[ind + 4:]
+                string = string[:ind1] + ')' + string[ind1:] if not comp else string
+                if not comp:
+                    string = string[:ind] + 'math.tan_(' + 'math.radians(' + string[ind + 4:]
+                if comp:
+                    string = string[:ind] + 'cmath.tan_('  + string[ind + 4:]
 
                 # ind = string.index('tan(math.radians(') + len('tan(math.radians(')
             string = ('').join(string.split('_'))
 
-        if 'cot' in string:
-            while 'cot(' in string:
-                ind = string.index('cot(')
-                ind1 = string.index('cot(') + 4
-                while True:
-
-                    if ind1 >= len(string) or string[ind1] not in '-1234567890':
-                        break
-                    ind1 += 1
-
-                string = string[:ind1] + ')' + string[ind1:]
-                string = string[:ind] + '1/math.tan(' + 'math.radians(' + string[ind + 4:]
-
-                # ind = string.index('tan(math.radians(') + len('tan(math.radians(')
-            string = ('').join(string.split('_'))
+        # if 'cot' in string:
+        #     while 'cot(' in string:
+        #         ind = string.index('cot(')
+        #         ind1 = string.index('cot(') + 4
+        #         while True:
+        #
+        #             if ind1 >= len(string) or string[ind1] not in '-1234567890.':
+        #                 break
+        #             ind1 += 1
+        #
+        #         string = string[:ind1] + ')' + string[ind1:]
+        #         string = string[:ind] + '1/math.tan(' + 'math.radians(' + string[ind + 4:]
+        #
+        #         # ind = string.index('tan(math.radians(') + len('tan(math.radians(')
+        #     string = ('').join(string.split('_'))
 
         if '!' in string:
             while '!' in string:
@@ -181,7 +209,7 @@ def simple_actions(string):
                 # string = string.split('!')
                 num = ''
                 while True:
-                    if ind < 0 or string[ind] not in '-1234567890':
+                    if ind < 0 or string[ind] not in '-1234567890.':
                         break
                     num += string[ind]
                     ind -= 1
@@ -197,6 +225,12 @@ def simple_actions(string):
     except ValueError:
         # print(string)
         return trans[lang_now.get()]["ent_num"]
+
+# def simple_actions_complex(string):
+#     try:
+#         res = eval(string)
+#     except ValueError:
+#         return trans[lang_now.get()]["ent_num"]
 
 
 
