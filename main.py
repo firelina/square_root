@@ -76,6 +76,9 @@ def calculate(num, prec):
 
 def simple_actions(string):
     try:
+        if ',' in string:
+            string = string.split(',')
+            string = ('.').join(string)
 
         if 'π' in string:
             string = string.split('π')
@@ -346,7 +349,7 @@ def clear_last_symbol():
 def clicked():
     num = txt.get()
     prec = set_prec.get()
-    calculate(num, prec)
+    set_result(calculate(num, prec))
 
 def set_result(result):
     ans.set(result)
