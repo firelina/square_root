@@ -8,7 +8,7 @@ import math
 
 # Validating input values and calculating result value
 def calculate(num, prec):
-    num = simple_actions(num)
+    num = str(simple_actions(num)).strip('()')
     if (state_.get() == True):
         try:
             INPT = num
@@ -42,7 +42,7 @@ def calculate(num, prec):
             try:
                 tmp = num
                 # if tmp
-                tmp = tmp.replace(' ', '')
+                # tmp = tmp.replace(' ', '')
 
                 res = cmath.sqrt(complex(tmp))
                 if (res.real == 0):
