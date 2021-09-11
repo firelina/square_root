@@ -9,6 +9,7 @@ from decimal import Decimal
 # Validating input values and calculating result value
 def calculate(num, prec, state):
     num = str(simple_actions(num)).strip('()')
+    # print(num)
     try:
         prec = int(prec)
     except ValueError:
@@ -44,8 +45,9 @@ def calculate(num, prec, state):
             if state:
                 res = round(res, prec)
             else:
-                res = int(res)
-            return '±' + str(res)
+                # print(res)
+                res = '±' + str(int(res)) if res > 1 else '0'
+            return res
     except OverflowError:
         return '±' + str(int(calculate_big_numbers(int(num))))
 
