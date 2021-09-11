@@ -76,6 +76,10 @@ def calculate(num, prec):
 
 def simple_actions(string):
     try:
+        if '+j' in string:
+            string = string.split('+j')
+            string = ('+1j').join(string)
+
         if ',' in string:
             string = string.split(',')
             string = ('.').join(string)
@@ -226,7 +230,7 @@ def simple_actions(string):
         # print(string)
         res = eval(string)
         return res
-    except ValueError:
+    except Exception:
         # print(string)
         return trans[lang_now.get()]["ent_num"]
 
