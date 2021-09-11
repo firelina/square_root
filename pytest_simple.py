@@ -4,30 +4,30 @@ from main import calculate
 
 class TestCalculate:
     def test_nothing(self):
-        assert calculate('', '') in ['Please, enter a number', 'Por favor, introduzca un número', '请输入数字', 'Пожалуйста, введите число']
+        assert calculate('', '', 1) in ['Incorrect input', 'Entrada incorrecta', '输入不正确', 'Неверный ввод']
 
     def test_int(self):
-        assert calculate('4', '0') == '±2'
-        assert calculate('8', '3') == '±2.828'
+        assert calculate('4', '0', 0) == '±2'
+        assert calculate('8', '3', 1) == '±2.828'
 
     def test_float(self):
-        assert calculate('5.98', '7') == '±2.4454039'
+        assert calculate('5.98', '7', 1) == '±2.4454039'
 
     def test_complex_num(self):
-        assert calculate('-4', '1') == '±2j'
-        assert calculate('4 + 5j', '3') == '±2.28∓1.096j'
-        assert calculate('5j + 4', '3') == '±2.28∓1.096j'
+        assert calculate('-4', '1', 0) == '±2j'
+        assert calculate('4 + 5j', '3', 1) == '±2.281±1.096j'
+        assert calculate('5j + 4', '3', 1) == '±2.281±1.096j'
 
     def test_null(self):
-        assert calculate('0', '') == '0'
+        assert calculate('0', '0', 0) == '0'
 
 
     def test_string(self):
-        assert calculate('j', '1') in ['Please, enter a number', 'Por favor, introduzca un número', '请输入数字', 'Пожалуйста, введите число']
+        assert calculate('j', '3', 1) == '±0.707±0.707j'
 
 
     def test_pre_float(self):
-        assert calculate('9', '8.9') in ['Incorrect input', 'Entrada incorrecta', '输入不正确', 'Неверный ввод']
+        assert calculate('9', '8.9', 1) in ['Incorrect input', 'Entrada incorrecta', '输入不正确', 'Неверный ввод']
 
 
     def test_big_num(self):
@@ -42,7 +42,7 @@ class TestCalculate:
                          '242112732122746366080001787759286193464839215716464228000040892557276565753934262769974304223'
                          '715093077728331094435552187050028188289310784407775540964578610736983028932025608057034904121'
                          '584625343980092955291085461112823974567845689954483599044279232421888598900686503194524321824'
-                         '0238466103031329248062120973437411258195970685601757120248131524642081856', '0') == '±6805' \
+                         '0238466103031329248062120973437411258195970685601757120248131524642081856', '0', 0) == '±6805' \
                          '748113787664824824148586441641948265022563078864187866363890785630580126678754515259810742450' \
                         '3316701887749720220603415974959561242770647206405075854693761748645436474693912889174270087450' \
                          '52420187430188114406377424656539317120978561310694089656565855014589638299790500028081992971' \

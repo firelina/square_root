@@ -2,77 +2,112 @@
 from tkinter import *
 import cmath
 import math
-
+from decimal import Decimal
 
 
 
 # Validating input values and calculating result value
-def calculate(num, prec):
+def calculate(num, prec, state):
     num = str(simple_actions(num)).strip('()')
-    if (state_.get() == True):
+    try:
+        prec = int(prec)
+    except ValueError:
+        return trans[lang_now.get()]["input"]
+    # if (state_.get() == True):
+    #     try:
+    #         INPT = num
+    #         INPT = float(INPT)
+    #         e = int(prec)
+    #         if INPT < 0:
+    #             return trans[lang_now.get()]["input"]
+    #         tmp = math.sqrt(INPT)
+    #         res = round(tmp, e)
+    #         if (res == 0):
+    #             return str(0)
+    #         else:
+    #             if (int(res) == float(res)):
+    #                 return '±' + str(int(res))
+    #             else:
+    #                 return '±' + str(res)
+    #     except ValueError:
+    #         return trans[lang_now.get()]["ent_num"]
+
+    try:
+        res = math.sqrt(float(num))
+        if (int(res) == float(res)):
+            res = str(int(res))
+        else:
+            res = float(res)
+        if (res == '0'):
+            return res
+        else:
+            if state:
+                res = round(res, prec)
+            return '±' + str(res)
+    except OverflowError:
+        return '±' + str(int(calculate_big_numbers(int(num))))
+
+    except ValueError:
         try:
-            INPT = num
-            INPT = float(INPT)
-            e = int(prec)
-            if INPT < 0:
-                return trans[lang_now.get()]["input"]
-            tmp = math.sqrt(INPT)
-            res = round(tmp, e)
-            if (res == 0):
-                return str(0)
-            else:
-                if (int(res) == float(res)):
-                    return '±' + str(int(res))
-                else:
-                    return '±' + str(res)
-        except ValueError:
-            return trans[lang_now.get()]["ent_num"]
-    else:
-        try:
-            res = math.sqrt(float(num))
-            if (int(res) == float(res)):
-                res = str(int(res))
-            else:
-                res = str(float(res))
-            if (res == '0'):
-                return res
-            else:
-                return '±' + str(res)
-        except ValueError:
-            try:
-                tmp = num
+            tmp = num
                 # if tmp
                 # tmp = tmp.replace(' ', '')
 
-                res = cmath.sqrt(complex(tmp))
-                if (res.real == 0):
-                    return '±' + str(res.imag) + 'j'
+            res = cmath.sqrt(complex(tmp))
+            if (res.real == 0):
+                if state:
+                    res = '±' + str(round(res.imag, prec)) + 'j'
+                else:
+                    res = '±' + str(int(res.imag)) + 'j'
+
+                return res
+            else:
+                if state:
+                    re = str(round(res.real, prec))
+                    im = str(round(res.imag, prec))
                 else:
                     re = str(res.real)
                     im = str(res.imag)
-                    return '±' + re + '∓' + im + 'j'
-            except ValueError:
-                try:
-                    Ims = ''
-                    Rez = ''
-                    jfind = False
-                    for i in range(0, len(tmp)):
-                        if not (jfind) and tmp[i] != 'j':
-                            Ims += tmp[i]
-                        elif tmp[i] == 'j':
-                            jfind = True
-                        else:
-                            Rez += tmp[i]
-                    imsint = int(Ims)
-                    if Rez[0] == '-':
-                        rezint = -int(Rez[1:])
+                if res.imag < 0:
+                    res = '±' + re + '∓' + im + 'j'
+                else:
+                    res = '±' + re + '±' + im + 'j'
+                return res
+        except ValueError:
+            try:
+                Ims = ''
+                Rez = ''
+                jfind = False
+                for i in range(0, len(tmp)):
+                    if not (jfind) and tmp[i] != 'j':
+                        Ims += tmp[i]
+                    elif tmp[i] == 'j':
+                        jfind = True
                     else:
-                        rezint = int(Rez)
-                    com = cmath.sqrt(complex(rezint, imsint))
-                    return '±' + str(com.real) + '∓' + str(com.imag) + 'j'
-                except ValueError:
-                    return trans[lang_now.get()]["ent_num"]
+                        Rez += tmp[i]
+                imsint = int(Ims)
+                if Rez[0] == '-':
+                    rezint = -int(Rez[1:])
+                else:
+                    rezint = int(Rez)
+                com = cmath.sqrt(complex(rezint, imsint))
+                if state:
+                    res = '±' + str(round(com.real, prec)) + '∓' + str(round(com.imag, prec)) + 'j'
+                else:
+                    res = '±' + str(com.real) + '∓' + str(com.imag) + 'j'
+                if com.imag > 0:
+                    res = '±' + str(com.real) + '±' + str(com.imag) + 'j'
+                return res
+            except ValueError:
+                return trans[lang_now.get()]["ent_num"]
 
+
+# вычисление корня из очень больших чисел
+def calculate_big_numbers(number):
+    degree = 2
+    nd = Decimal(number)
+    exponent = Decimal("1.0") / Decimal(degree)
+    return nd ** exponent
 
 def simple_actions(string):
     try:
@@ -319,7 +354,7 @@ def lang_change(*args):
     # print(lang_now.get())
     window.title(trans[lang_now.get()]["title"])
     btn['text'] = trans[lang_now.get()]["text"]
-    # btn_del_all_per['text'] = trans[lang_now.get()]["del_per"]
+    btn_del_per['text'] = trans[lang_now.get()]["del_per"]
     main_menu.entryconfig(1, label=trans[lang_now.get()]["lang"])
     main_menu.entryconfig(2, label=trans[lang_now.get()]["help"])
     about_m.entryconfig(1, label=trans[lang_now.get()]["aboutus"])
@@ -363,7 +398,8 @@ def clear_last_symbol():
 def clicked():
     num = txt.get()
     prec = set_prec.get()
-    set_result(calculate(num, prec))
+    state = state_.get()
+    set_result(calculate(num, prec, state))
 
 def set_result(result):
     ans.set(result)
@@ -676,8 +712,8 @@ btn_minus.place(x=335, y=135)
 
 # create_clear_button
 
-btn_del_all_per = Button(window, text='Remove precision', width=15, command=clear_per)
-btn_del_all_per.place(x=370, y=135)
+btn_del_per = Button(window, text='Remove precision', width=15, command=clear_per)
+btn_del_per.place(x=370, y=135)
 
 # create_calculate_button
 btn = Button(window, text='Calculate ', width=15, command=clicked)
