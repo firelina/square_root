@@ -43,6 +43,8 @@ def calculate(num, prec, state):
         else:
             if state:
                 res = round(res, prec)
+            else:
+                res = int(res)
             return '±' + str(res)
     except OverflowError:
         return '±' + str(int(calculate_big_numbers(int(num))))
@@ -118,10 +120,12 @@ def simple_actions(string):
         while 'j' in string:
             ind = string.index('j')
             if string[ind - 1] not in '1234567890' or ind == 0:
-                string = string[:ind] + '1i' + string[ind + 1:]
+                string = string[:ind] + '1f' + string[ind + 1:]
             elif string[ind - 1] in '1234567890':
-                string = string[:ind] + 'i' + string[ind + 1:]
-        string = ('j').join(string.split('i'))
+                string = string[:ind] + 'f' + string[ind + 1:]
+        string = ('j').join(string.split('f'))
+
+
         # print(string)
 
 
