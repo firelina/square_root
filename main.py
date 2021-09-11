@@ -5,36 +5,15 @@ import math
 from decimal import Decimal
 
 
-
-# Validating input values and calculating result value
+# Вычисление квадратного корня
 def calculate(num, prec, state):
     num = str(simple_actions(num)).strip('()')
-    # print(num)
     try:
         prec = int(prec)
     except ValueError:
         return trans[lang_now.get()]["input"]
     if num == trans[lang_now.get()]["input"]:
         return trans[lang_now.get()]["input"]
-    # if (state_.get() == True):
-    #     try:
-    #         INPT = num
-    #         INPT = float(INPT)
-    #         e = int(prec)
-    #         if INPT < 0:
-    #             return trans[lang_now.get()]["input"]
-    #         tmp = math.sqrt(INPT)
-    #         res = round(tmp, e)
-    #         if (res == 0):
-    #             return str(0)
-    #         else:
-    #             if (int(res) == float(res)):
-    #                 return '±' + str(int(res))
-    #             else:
-    #                 return '±' + str(res)
-    #     except ValueError:
-    #         return trans[lang_now.get()]["ent_num"]
-
     try:
         res = math.sqrt(float(num))
         if (int(res) == float(res)):
@@ -45,27 +24,21 @@ def calculate(num, prec, state):
             return res
         else:
             if state:
-                res = round(res, prec)
+                res = '±' + str(round(res, prec))
             else:
-                # print(res)
                 res = '±' + str(round(res)) if str(round(res)) != '0' else '0'
             return str(res)
     except OverflowError:
         return '±' + str(int(calculate_big_numbers(int(num))))
-
     except ValueError:
         try:
             tmp = num
-                # if tmp
-                # tmp = tmp.replace(' ', '')
-
             res = cmath.sqrt(complex(tmp))
             if (res.real == 0):
                 if state:
                     res = '±' + str(round(res.imag, prec)) + 'j' if str(round(res.imag, prec)) != '0.0' else '0'
                 else:
                     res = '±' + str(round(res.imag)) + 'j' if str(round(res.imag)) != '0' else '0'
-
                 return res
             else:
                 if state:
@@ -115,12 +88,10 @@ def calculate_big_numbers(number):
     exponent = Decimal("1.0") / Decimal(degree)
     return nd ** exponent
 
+
+# вычисление значения вводимых выражений до извлечения корня
 def simple_actions(string):
     try:
-        # if '+j' in string:
-        #     string = string.split('+j')
-        #     string = ('+1j').join(string)
-
         while 'j' in string:
             ind = string.index('j')
             if string[ind - 1] not in '1234567890' or ind == 0:
@@ -128,16 +99,8 @@ def simple_actions(string):
             elif string[ind - 1] in '1234567890':
                 string = string[:ind] + 'f' + string[ind + 1:]
         string = ('j').join(string.split('f'))
-
-
         if 'tan(90)' in string:
             return trans[lang_now.get()]["input"]
-
-        #
-        # if ',' in string:
-        #     string = string.split(',')
-        #     string = ('.').join(string)
-
         if 'π' in string:
             string = string.split('π')
             string = ('math.pi').join(string)
@@ -151,9 +114,7 @@ def simple_actions(string):
                     if ind >= len(string) or string[ind] not in '-1234567890.':
                         break
                     ind += 1
-
                 string = string[:ind] + ')' + string[ind + 1:]
-
         if '^' in string:
             string = string.split('^')
             string = ('**').join(string)
@@ -161,71 +122,47 @@ def simple_actions(string):
             while 'log(' in string:
                 ind = string.index('log(')
                 ind1 = string.index('log(') + 4
-
                 comp = False
                 while string[ind1] != ')':
                     comp = True if string[ind1] == 'j' else False
-
-                    # if ind1 >= len(string) or string[ind1] not in '-1234567890.':
-                    #     break
                     ind1 += 1
-
                 if not comp:
                     string = string[:ind] + 'math.log_(' + string[ind + 4:]
                 if comp:
                     string = string[:ind] + 'cmath.log_(' + string[ind + 4:]
-
-
-            # ind = string.index(')')
             string = ('').join(string.split('_'))
         if 'ln' in string:
             while 'ln(' in string:
-
                 ind = string.index('ln(')
                 string = string[:ind] + 'math.log1p_(' + string[ind + 3:]
-
-            # ind = string.index(')')
             string = ('').join(string.split('_'))
-
         if 'cos' in string:
-
             while 'cos(' in string:
                 ind = string.index('cos(')
                 ind1 = string.index('cos(') + 4
                 comp = False
                 while string[ind1] != ')':
                     comp = True if string[ind1] == 'j' else False
-
-                    # if ind1 >= len(string) or string[ind1] not in '-1234567890.':
-                    #     break
                     ind1 += 1
-
                 string = string[:ind1] + ')' + string[ind1:] if not comp else string
                 if not comp:
                     string = string[:ind] + 'math.cos_(' + 'math.radians(' + string[ind + 4:]
                 if comp:
                     string = string[:ind] + 'cmath.cos_(' + string[ind + 4:]
-
             string = ('').join(string.split('_'))
         if 'sin' in string:
-
             while 'sin(' in string:
                 ind = string.index('sin(')
                 ind1 = string.index('sin(') + 4
                 comp = False
                 while string[ind1] != ')':
                     comp = True if string[ind1] == 'j' else False
-
-                    # if ind1 >= len(string) or string[ind1] not in '-1234567890.':
-                    #     break
                     ind1 += 1
-
                 string = string[:ind1] + ')' + string[ind1:] if not comp else string
                 if not comp:
                     string = string[:ind] + 'math.sin_(' + 'math.radians(' + string[ind + 4:]
                 if comp:
                     string = string[:ind] + 'cmath.sin_(' + string[ind + 4:]
-
             string = ('').join(string.split('_'))
         if 'tan' in string:
             while 'tan(' in string:
@@ -234,66 +171,29 @@ def simple_actions(string):
                 comp = False
                 while string[ind1] != ')':
                     comp = True if string[ind1] == 'j' else False
-
-                    # if ind1 >= len(string) or string[ind1] not in '-1234567890.':
-                    #     break
                     ind1 += 1
-
                 string = string[:ind1] + ')' + string[ind1:] if not comp else string
                 if not comp:
                     string = string[:ind] + 'math.tan_(' + 'math.radians(' + string[ind + 4:]
                 if comp:
                     string = string[:ind] + 'cmath.tan_('  + string[ind + 4:]
-
-                # ind = string.index('tan(math.radians(') + len('tan(math.radians(')
             string = ('').join(string.split('_'))
-
-        # if 'cot' in string:
-        #     while 'cot(' in string:
-        #         ind = string.index('cot(')
-        #         ind1 = string.index('cot(') + 4
-        #         while True:
-        #
-        #             if ind1 >= len(string) or string[ind1] not in '-1234567890.':
-        #                 break
-        #             ind1 += 1
-        #
-        #         string = string[:ind1] + ')' + string[ind1:]
-        #         string = string[:ind] + '1/math.tan(' + 'math.radians(' + string[ind + 4:]
-        #
-        #         # ind = string.index('tan(math.radians(') + len('tan(math.radians(')
-        #     string = ('').join(string.split('_'))
-
         if '!' in string:
             while '!' in string:
                 ind = string.index('!') - 1
                 ind1 = string.index('!')
-                # string = string.split('!')
                 num = ''
                 while True:
                     if ind < 0 or string[ind] not in '-1234567890.':
                         break
                     num += string[ind]
                     ind -= 1
-
                 num = num[::-1]
                 string = string[:ind + 1] + 'math.factorial(' + num + ')' + string[ind1 + 1:]
-
-
-        # string = ('))').join(string.split('#'))
-        # print(string)
         res = eval(string)
         return res
     except Exception:
-        # print(string)
         return trans[lang_now.get()]["ent_num"]
-
-# def simple_actions_complex(string):
-#     try:
-#         res = eval(string)
-#     except ValueError:
-#         return trans[lang_now.get()]["ent_num"]
-
 
 
 class CreateToolTip(object):
@@ -352,10 +252,6 @@ class CreateToolTip(object):
 
 
 keys_lang = []
-# keys_trans = ["title", "text", 'del_num', 'del_per', 'lang', 'help', 'aboutus', 'enter_num_tip', 'enter_per_tip', 'input', 'ent_num']
-
-# trans = {'English': {"title": 'Square root of a number', "text": 'Calculate', 'del_num': 'Remove number',
-#           'del_per': 'Remove precision', 'lang': 'Language', 'help': 'Help', 'aboutus': 'About us'}}
 trans = {}
 
 # TRANSLATE
@@ -410,9 +306,9 @@ def clicked():
     state = state_.get()
     set_result(calculate(num, prec, state))
 
+
 def set_result(result):
     ans.set(result)
-
 
 
 #   set_symbol_functions
@@ -437,8 +333,8 @@ def set_prec_symbol(value):
          set_prec.insert(0, value)
          set_prec['state'] = 'readonly'
 
-# key_events
 
+# key_events
 def press_key(event):
     if not state_.get():
         if event.char == '\r':
@@ -483,8 +379,8 @@ def press_key(event):
         elif event.char.isdigit():
             set_prec_symbol(set_prec.get() + event.char)
 
-# Work with on-screen buttons
 
+# Work with on-screen buttons
 def disable_button():
     if state_.get():
         btn_sin['state'] = 'disable'
@@ -539,12 +435,8 @@ def add_symbol(symbol):
             value=value[1:]
         set_number_symbol(value)
 
-# create_buttons_calculate
-# def create_buttons():
-
 
 # Creating window
-
 window = Tk()
 window.geometry('500x190')
 window.resizable(width=False, height=False)
@@ -555,32 +447,20 @@ window.bind('<Key>', press_key)
 '''
 Creating elements
 '''
-
 lang_now = IntVar()
 lang_now.set(0)
 lang_now.trace("w", lang_change)
-
 ans = StringVar()
 ans.set('')
-
 # MENU
 main_menu = Menu()
 
-
-# files = ['eng', 'spn', 'rus', 'cha']
 
 def add_butts():
     lang_m = Menu()
     if not keys_lang:
         main_menu.add_cascade(label='Language', menu=lang_m)
     trans.clear()
-    # if keys_lang:
-    #     empty_menu = Menu()
-    #     window.config(menu=empty_menu)
-    #     empty_menu.add_cascade(label='Language', menu=lang_m)
-    #     empty_menu.add_cascade(label='Help', menu=about_m)
-
-
     f = open("all_languages", encoding="utf-8")
     data = f.read()
     data = data.split('***\n')
@@ -600,10 +480,8 @@ def add_butts():
 
 
 add_butts()
-
 about_m = Menu()
 about_m.add_command(label="About us")
-
 main_menu.add_cascade(label='Help', menu=about_m)
 # OUTPUT area
 out = Entry(window, textvariable=ans, width=83, justify='right', relief='sunken', state='readonly')
