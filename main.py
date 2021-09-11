@@ -76,9 +76,19 @@ def calculate(num, prec):
 
 def simple_actions(string):
     try:
-        if '+j' in string:
-            string = string.split('+j')
-            string = ('+1j').join(string)
+        # if '+j' in string:
+        #     string = string.split('+j')
+        #     string = ('+1j').join(string)
+
+        while 'j' in string:
+            ind = string.index('j')
+            if string[ind - 1] not in '1234567890' or ind == 0:
+                string = string[:ind] + '1i' + string[ind + 1:]
+            elif string[ind - 1] in '1234567890':
+                string = string[:ind] + 'i' + string[ind + 1:]
+        string = ('j').join(string.split('i'))
+        print(string)
+
 
         if ',' in string:
             string = string.split(',')
