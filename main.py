@@ -87,7 +87,7 @@ def simple_actions(string):
             elif string[ind - 1] in '1234567890':
                 string = string[:ind] + 'i' + string[ind + 1:]
         string = ('j').join(string.split('i'))
-        print(string)
+        # print(string)
 
 
         if ',' in string:
