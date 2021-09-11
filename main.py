@@ -36,7 +36,7 @@ def calculate(num, prec, state):
     try:
         res = math.sqrt(float(num))
         if (int(res) == float(res)):
-            res = str(int(res))
+            res = int(res)
         else:
             res = float(res)
         if (res == '0'):
@@ -46,8 +46,8 @@ def calculate(num, prec, state):
                 res = round(res, prec)
             else:
                 # print(res)
-                res = '±' + str(int(res)) if res > 1 else '0'
-            return res
+                res = '±' + str(int(res)) if int(res) >= 1 else '0'
+            return str(res)
     except OverflowError:
         return '±' + str(int(calculate_big_numbers(int(num))))
 
