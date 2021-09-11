@@ -14,6 +14,8 @@ def calculate(num, prec, state):
         prec = int(prec)
     except ValueError:
         return trans[lang_now.get()]["input"]
+    if num == trans[lang_now.get()]["input"]:
+        return trans[lang_now.get()]["input"]
     # if (state_.get() == True):
     #     try:
     #         INPT = num
@@ -46,7 +48,7 @@ def calculate(num, prec, state):
                 res = round(res, prec)
             else:
                 # print(res)
-                res = '±' + str(int(res)) if int(res) >= 1 else '0'
+                res = '±' + str(round(res)) if str(round(res)) != '0' else '0'
             return str(res)
     except OverflowError:
         return '±' + str(int(calculate_big_numbers(int(num))))
@@ -60,9 +62,9 @@ def calculate(num, prec, state):
             res = cmath.sqrt(complex(tmp))
             if (res.real == 0):
                 if state:
-                    res = '±' + str(round(res.imag, prec)) + 'j'
+                    res = '±' + str(round(res.imag, prec)) + 'j' if str(round(res.imag, prec)) != '0.0' else '0'
                 else:
-                    res = '±' + str(int(res.imag)) + 'j'
+                    res = '±' + str(round(res.imag)) + 'j' if str(round(res.imag)) != '0' else '0'
 
                 return res
             else:
@@ -128,12 +130,13 @@ def simple_actions(string):
         string = ('j').join(string.split('f'))
 
 
-        # print(string)
+        if 'tan(90)' in string:
+            return trans[lang_now.get()]["input"]
 
-
-        if ',' in string:
-            string = string.split(',')
-            string = ('.').join(string)
+        #
+        # if ',' in string:
+        #     string = string.split(',')
+        #     string = ('.').join(string)
 
         if 'π' in string:
             string = string.split('π')
