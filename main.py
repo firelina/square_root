@@ -2,8 +2,8 @@
 from tkinter import *
 import cmath
 import math
-from decimal import Decimal
 import webbrowser
+from decimal import Decimal
 
 
 # Вычисление квадратного корня
@@ -274,7 +274,7 @@ def lang_change(*args):
 # CLEAR
 def clear():
     btn_clean_entry.config(bg='#a6a6a6')
-    window.after(200, lambda: btn_clean_entry.config(bg='#f0f0ed'))
+    window.after(200, lambda: btn_clean_entry .config(bg='#f0f0ed'))
     txt['state'] = 'normal'
     txt.delete(0, 'end')
     txt.insert(0, 0)
@@ -595,7 +595,40 @@ def add_symbol(symbol):
             value = value[1:]
         set_number_symbol(value)
 
+###
 
+def link_google():
+    webbrowser.open('https://clck.ru/XVvy8', new = 2)
+        
+def destr():
+    top.destroy()
+    opened.set(0)
+
+#Create Top Info window
+def InfoWin():
+    if(opened.get() == 0):
+        global top
+        top = Toplevel()
+        top.title('')
+        photo = PhotoImage(file='logo.png')
+        frame_text = Frame(top, relief = 'sunken', bg = '#E5E7E9', width = 130, height = 200, bd = 5)
+        frame_text.pack(side = TOP)
+        lbl = Label(frame_text, text = 'We are a young \n team whose goal is \n to help people in \n complex mathematical \n calculations.\n\n\n\n\n\n')
+        lbl.pack(side = TOP)
+        frame_contact = Frame(top, relief = 'sunken', bg = '#E5E7E9', width = 130, height = 50, bd = 2)
+        frame_contact.pack(side = TOP)
+        lbl_cont = Label(frame_contact, font = 'Cricket 8', text = 'Contact information \n email: sqrt.company@gmail.com \n Phone: +79091021771')
+        lbl_cont.pack(side = TOP)
+        btn_inf = Button(frame_contact, text = 'Google form', command = link_google)
+        btn_inf.pack(side = TOP)
+        top.iconphoto(False, photo)
+        top.geometry('200x300')
+        button_destroy = Button(top, width = 15, text = 'Close', command = destr)
+        button_destroy.pack(side = BOTTOM)
+        opened.set(1)
+    else:
+        pass
+    
 # Creating window
 window = Tk()
 window.geometry('500x190')
@@ -607,6 +640,8 @@ window.bind('<Key>', press_key)
 '''
 Creating elements
 '''
+opened = IntVar()
+opened.set(0)
 lang_now = IntVar()
 lang_now.set(0)
 lang_now.trace("w", lang_change)
@@ -638,17 +673,9 @@ def add_butts():
         lang_m.add_radiobutton(label=lang_title, variable=lang_now, value=count)
     f.close()
 
-
-def link_google():
-    webbrowser.open(
-        'https://docs.google.com/forms/d/1KTsSa-5r9dTQtwoM5mln4rkDtGVHTyV9Qob79N8nBWw/viewform?edit_requested=true',
-        new=2)
-
-
 add_butts()
 about_m = Menu()
-about_m.add_cascade(label='About us', command=link_google)
-
+about_m.add_command(label="About us", command = InfoWin)
 main_menu.add_cascade(label='Help', menu=about_m)
 # OUTPUT area
 out = Entry(window, textvariable=ans, width=83, justify='right', relief='sunken', state='readonly')
