@@ -259,7 +259,7 @@ trans = {}
 def lang_change(*args):
     # print(lang_now.get())
     window.title(trans[lang_now.get()]["title"])
-    btn['text'] = trans[lang_now.get()]["text"]
+    btn_clicked['text'] = trans[lang_now.get()]["text"]
     btn_del_per['text'] = trans[lang_now.get()]["del_per"]
     main_menu.entryconfig(1, label=trans[lang_now.get()]["lang"])
     main_menu.entryconfig(2, label=trans[lang_now.get()]["help"])
@@ -273,7 +273,7 @@ def lang_change(*args):
 # CLEAR
 def clear():
     btn_clean_entry.config(bg='#a6a6a6')
-    window.after(200, lambda: btn_clean_entry.config(bg='#f0f0ed'))
+    window.after(200, lambda: btn_clean_entry .config(bg='#f0f0ed'))
     txt['state'] = 'normal'
     txt.delete(0, 'end')
     txt.insert(0, 0)
