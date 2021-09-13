@@ -272,6 +272,8 @@ def lang_change(*args):
 
 # CLEAR
 def clear():
+    btn_clean_entry.config(bg='#a6a6a6')
+    window.after(200, lambda: btn_clean_entry.config(bg='#f0f0ed'))
     txt['state'] = 'normal'
     txt.delete(0, 'end')
     txt.insert(0, 0)
@@ -279,6 +281,8 @@ def clear():
 
 
 def clear_per():
+    btn_del_per.config(bg='#a6a6a6')
+    window.after(200, lambda: btn_del_per.config(bg='#f0f0ed'))
     set_prec['state'] = 'normal'
     set_prec.delete(0, 'end')
     set_prec.insert(0, 0)
@@ -286,6 +290,8 @@ def clear_per():
 
 
 def clear_last_symbol():
+    btn_delete_last_symbol.config(bg='#a6a6a6')
+    window.after(200, lambda: btn_delete_last_symbol.config(bg='#f0f0ed'))
     if state_.get():
         set_prec['state'] = 'normal'
         set_prec.delete(len(set_prec.get()) - 1, len(set_prec.get()))
@@ -302,6 +308,8 @@ def clear_last_symbol():
 
 # start_calc
 def clicked():
+    btn_clicked.config(bg='#a6a6a6')
+    window.after(200, lambda: btn_clicked.config(bg='#f0f0ed'))
     num = txt.get()
     prec = set_prec.get()
     state = state_.get()
@@ -340,7 +348,7 @@ def press_key(event):
     if not state_.get():
         if event.char == '\r':
             btn_clicked.config(bg='#a6a6a6')
-            window.after(270, lambda: btn_clicked.config(bg='#f0f0ed'))
+            window.after(200, lambda: btn_clicked.config(bg='#f0f0ed'))
             clicked()
         elif event.char == '\x08':
             value = txt.get()
@@ -348,7 +356,7 @@ def press_key(event):
             if len(value) == 0:
                 value = '0'
             btn_delete_last_symbol.config(bg='#a6a6a6')
-            window.after(270, lambda: btn_delete_last_symbol.config(bg='#f0f0ed'))
+            window.after(200, lambda: btn_delete_last_symbol.config(bg='#f0f0ed'))
             set_number_symbol(value)
         elif event.char.isdigit() or event.char in '!|+-.j*^,/()':
             value = txt.get() + event.char
@@ -372,47 +380,47 @@ def press_key(event):
             # change_color_of_parenthesis_buttons
             if event.char == '(':
                 btn_left_parenthesis.config(bg='#a6a6a6')
-                window.after(270, lambda: btn_left_parenthesis.config(bg='#f0f0ed'))
-            if event.char == ')':
+                window.after(200, lambda: btn_left_parenthesis.config(bg='#f0f0ed'))
+            elif event.char == ')':
                 btn_right_parenthesis.config(bg='#a6a6a6')
-                window.after(270, lambda: btn_right_parenthesis.config(bg='#f0f0ed'))
+                window.after(200, lambda: btn_right_parenthesis.config(bg='#f0f0ed'))
             # change_color_of_operation_buttons
-            if event.char == '/':
+            elif event.char == '/':
                 btn_division.config(bg='#a6a6a6')
-                window.after(270, lambda: btn_division.config(bg='#f0f0ed'))
-            if event.char == '*':
+                window.after(200, lambda: btn_division.config(bg='#f0f0ed'))
+            elif event.char == '*':
                 btn_multiplication.config(bg='#a6a6a6')
-                window.after(270, lambda: btn_multiplication.config(bg='#f0f0ed'))
-            if event.char == '-':
+                window.after(200, lambda: btn_multiplication.config(bg='#f0f0ed'))
+            elif event.char == '-':
                 btn_minus.config(bg='#a6a6a6')
-                window.after(270, lambda: btn_minus.config(bg='#f0f0ed'))
-            if event.char == '+':
+                window.after(200, lambda: btn_minus.config(bg='#f0f0ed'))
+            elif event.char == '+':
                 btn_plus.config(bg='#a6a6a6')
-                window.after(270, lambda: btn_plus.config(bg='#f0f0ed'))
-            if event.char == '^':
+                window.after(200, lambda: btn_plus.config(bg='#f0f0ed'))
+            elif event.char == '^':
                 btn_exponentiation.config(bg='#a6a6a6')
-                window.after(270, lambda: btn_exponentiation.config(bg='#f0f0ed'))
-            if event.char == '!':
+                window.after(200, lambda: btn_exponentiation.config(bg='#f0f0ed'))
+            elif event.char == '!':
                 btn_factorial.config(bg='#a6a6a6')
-                window.after(270, lambda: btn_factorial.config(bg='#f0f0ed'))
-            if event.char == '|':
+                window.after(200, lambda: btn_factorial.config(bg='#f0f0ed'))
+            elif event.char == '|':
                 btn_module.config(bg='#a6a6a6')
-                window.after(270, lambda: btn_module.config(bg='#f0f0ed'))
+                window.after(200, lambda: btn_module.config(bg='#f0f0ed'))
             # change_color_of_log_complex_buttons
-            if event.char == 'j':
+            elif event.char == 'j':
                 btn_imaginary_unit.config(bg='#a6a6a6')
-                window.after(270, lambda: btn_imaginary_unit.config(bg='#f0f0ed'))
-            if event.char == '.':
+                window.after(200, lambda: btn_imaginary_unit.config(bg='#f0f0ed'))
+            elif event.char == '.':
                 btn_dot.config(bg='#a6a6a6')
-                window.after(270, lambda: btn_dot.config(bg='#f0f0ed'))
-            if event.char == ',':
+                window.after(200, lambda: btn_dot.config(bg='#f0f0ed'))
+            elif event.char == ',':
                 btn_comma.config(bg='#a6a6a6')
-                window.after(270, lambda: btn_comma.config(bg='#f0f0ed'))
+                window.after(200, lambda: btn_comma.config(bg='#f0f0ed'))
             set_number_symbol(value)
     else:
         if event.char == '\x08':
             btn_delete_last_symbol.config(bg='#a6a6a6')
-            window.after(270, lambda: btn_delete_last_symbol.config(bg='#f0f0ed'))
+            window.after(200, lambda: btn_delete_last_symbol.config(bg='#f0f0ed'))
             value = set_prec.get()
             value = value[:-1]
             if len(value) > 0:
@@ -424,46 +432,49 @@ def press_key(event):
                 set_prec['state'] = 'readonly'
         elif event.char == '\r':
             btn_clicked.config(bg='#a6a6a6')
-            window.after(270, lambda: btn_clicked.config(bg='#f0f0ed'))
+            window.after(200, lambda: btn_clicked.config(bg='#f0f0ed'))
             clicked()
         elif event.char.isdigit():
             change_color_digit_buttons(event.char)
             set_prec_symbol(set_prec.get() + event.char)
-#change_color_of_digit_buttons
+
+
+# change_color_of_digit_buttons
 def change_color_digit_buttons(symbol):
     # change_color_of_digit_buttons
     if symbol == '0':
         btn_digit_0.config(bg='#a6a6a6')
-        window.after(270, lambda: btn_digit_0.config(bg='#f0f0ed'))
+        window.after(200, lambda: btn_digit_0.config(bg='#f0f0ed'))
     if symbol == '1':
         btn_digit_1.config(bg='#a6a6a6')
-        window.after(270, lambda: btn_digit_1.config(bg='#f0f0ed'))
+        window.after(200, lambda: btn_digit_1.config(bg='#f0f0ed'))
     if symbol == '2':
         btn_digit_2.config(bg='#a6a6a6')
-        window.after(270, lambda: btn_digit_2.config(bg='#f0f0ed'))
+        window.after(200, lambda: btn_digit_2.config(bg='#f0f0ed'))
     if symbol == '3':
         btn_digit_3.config(bg='#a6a6a6')
-        window.after(270, lambda: btn_digit_3.config(bg='#f0f0ed'))
+        window.after(200, lambda: btn_digit_3.config(bg='#f0f0ed'))
     if symbol == '4':
         btn_digit_4.config(bg='#a6a6a6')
-        window.after(270, lambda: btn_digit_4.config(bg='#f0f0ed'))
+        window.after(200, lambda: btn_digit_4.config(bg='#f0f0ed'))
     if symbol == '5':
         btn_digit_5.config(bg='#a6a6a6')
-        window.after(270, lambda: btn_digit_5.config(bg='#f0f0ed'))
+        window.after(200, lambda: btn_digit_5.config(bg='#f0f0ed'))
     if symbol == '6':
         btn_digit_6.config(bg='#a6a6a6')
-        window.after(270, lambda: btn_digit_6.config(bg='#f0f0ed'))
+        window.after(200, lambda: btn_digit_6.config(bg='#f0f0ed'))
     if symbol == '7':
         btn_digit_7.config(bg='#a6a6a6')
-        window.after(270, lambda: btn_digit_7.config(bg='#f0f0ed'))
+        window.after(200, lambda: btn_digit_7.config(bg='#f0f0ed'))
     if symbol == '8':
         btn_digit_8.config(bg='#a6a6a6')
-        window.after(270, lambda: btn_digit_8.config(bg='#f0f0ed'))
+        window.after(200, lambda: btn_digit_8.config(bg='#f0f0ed'))
     if symbol == '9':
         btn_digit_9.config(bg='#a6a6a6')
-        window.after(270, lambda: btn_digit_9.config(bg='#f0f0ed'))
+        window.after(200, lambda: btn_digit_9.config(bg='#f0f0ed'))
     else:
         pass
+
 
 # Work with on-screen buttons
 def disable_button():
@@ -510,7 +521,70 @@ def disable_button():
         btn_delete_last_symbol['state'] = 'active'
 
 
+def change_color_buttons(symbol):
+    if symbol.isdigit():
+        change_color_digit_buttons(symbol)
+    else:
+        if symbol == '(':
+            btn_left_parenthesis.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_left_parenthesis.config(bg='#f0f0ed'))
+        elif symbol == ')':
+            btn_right_parenthesis.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_right_parenthesis.config(bg='#f0f0ed'))
+        # change_color_of_operation_buttons
+        elif symbol == '/':
+            btn_division.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_division.config(bg='#f0f0ed'))
+        elif symbol == '*':
+            btn_multiplication.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_multiplication.config(bg='#f0f0ed'))
+        elif symbol == '-':
+            btn_minus.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_minus.config(bg='#f0f0ed'))
+        elif symbol == '+':
+            btn_plus.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_plus.config(bg='#f0f0ed'))
+        elif symbol == '^':
+            btn_exponentiation.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_exponentiation.config(bg='#f0f0ed'))
+        elif symbol == '!':
+            btn_factorial.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_factorial.config(bg='#f0f0ed'))
+        elif symbol == '|':
+            btn_module.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_module.config(bg='#f0f0ed'))
+        # change_color_of_log_complex_buttons
+        elif symbol == 'j':
+            btn_imaginary_unit.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_imaginary_unit.config(bg='#f0f0ed'))
+        elif symbol == '.':
+            btn_dot.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_dot.config(bg='#f0f0ed'))
+        elif symbol == ',':
+            btn_comma.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_comma.config(bg='#f0f0ed'))
+        elif symbol == 'π':
+            btn_pi.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_pi.config(bg='#f0f0ed'))
+        elif symbol == 'ln':
+            btn_ln.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_ln.config(bg='#f0f0ed'))
+        elif symbol == 'log':
+            btn_log.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_log.config(bg='#f0f0ed'))
+        elif symbol == 'sin':
+            btn_sin.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_sin.config(bg='#f0f0ed'))
+        elif symbol == 'cos':
+            btn_cos.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_cos.config(bg='#f0f0ed'))
+        elif symbol == 'tan':
+            btn_tan.config(bg='#a6a6a6')
+            window.after(200, lambda: btn_tan.config(bg='#f0f0ed'))
+
+
 def add_symbol(symbol):
+    change_color_buttons(symbol)
     if state_.get():
         value = set_prec.get() + str(symbol)
         set_prec_symbol(value)
@@ -602,37 +676,37 @@ button1_ttp = CreateToolTip(tipBtn, \
                             'check the checkbox. After that, enter the precision with which '
                             'you want to perform the calculations. ')
 
-btn_sin = Button(width=3, text='sin', activebackground='#a6a6a6', command=lambda: add_symbol('sin'))
-btn_cos = Button(width=3, text='cos', activebackground='#a6a6a6', command=lambda: add_symbol('cos'))
-btn_tan = Button(width=3, text='tan', activebackground='#a6a6a6', command=lambda: add_symbol('tan'))
-btn_comma = Button(width=3, text=',', activebackground='#a6a6a6', command=lambda: add_symbol(','))
-btn_pi = Button(width=3, text='π', activebackground='#a6a6a6', command=lambda: add_symbol('π'))
-btn_imaginary_unit = Button(width=3, text='j', activebackground='#a6a6a6', command=lambda: add_symbol('j'))
-btn_ln = Button(width=3, text='ln', activebackground='#a6a6a6', command=lambda: add_symbol('ln'))
-btn_log = Button(width=3, text='log', activebackground='#a6a6a6', command=lambda: add_symbol('log'))
-btn_left_parenthesis = Button(width=3, text='(', activebackground='#a6a6a6', command=lambda: add_symbol('('))
-btn_right_parenthesis = Button(width=3, text=')', activebackground='#a6a6a6', command=lambda: add_symbol(')'))
-btn_exponentiation = Button(width=3, text='^', activebackground='#a6a6a6', command=lambda: add_symbol('^'))
-btn_module = Button(width=3, text='|x|', activebackground='#a6a6a6', command=lambda: add_symbol('|'))
-btn_factorial = Button(width=3, text='n!', activebackground='#a6a6a6', command=lambda: add_symbol('!'))
-btn_dot = Button(width=3, text='.', activebackground='#a6a6a6', command=lambda: add_symbol('.'))
-btn_plus = Button(width=3, text='+', activebackground='#a6a6a6', command=lambda: add_symbol('+'))
-btn_minus = Button(width=3, text='-', activebackground='#a6a6a6', command=lambda: add_symbol('-'))
-btn_multiplication = Button(width=3, text='*', activebackground='#a6a6a6', command=lambda: add_symbol('*'))
-btn_division = Button(width=3, text='/', activebackground='#a6a6a6', command=lambda: add_symbol('/'))
-btn_clean_entry = Button(width=3, text='CE', activebackground='#a6a6a6', command=clear)
-btn_delete_last_symbol = Button(width=3, text='⇐', activebackground='#a6a6a6', command=clear_last_symbol)
+btn_sin = Button(width=3, text='sin', bg='#f0f0ed', command=lambda: add_symbol('sin'))
+btn_cos = Button(width=3, text='cos', bg='#f0f0ed', command=lambda: add_symbol('cos'))
+btn_tan = Button(width=3, text='tan', bg='#f0f0ed', command=lambda: add_symbol('tan'))
+btn_comma = Button(width=3, text=',', bg='#f0f0ed', command=lambda: add_symbol(','))
+btn_pi = Button(width=3, text='π', bg='#f0f0ed', command=lambda: add_symbol('π'))
+btn_imaginary_unit = Button(width=3, text='j', bg='#f0f0ed', command=lambda: add_symbol('j'))
+btn_ln = Button(width=3, text='ln', bg='#f0f0ed', command=lambda: add_symbol('ln'))
+btn_log = Button(width=3, text='log', bg='#f0f0ed', command=lambda: add_symbol('log'))
+btn_left_parenthesis = Button(width=3, text='(', bg='#f0f0ed', command=lambda: add_symbol('('))
+btn_right_parenthesis = Button(width=3, text=')', bg='#f0f0ed', command=lambda: add_symbol(')'))
+btn_exponentiation = Button(width=3, text='^', bg='#f0f0ed', command=lambda: add_symbol('^'))
+btn_module = Button(width=3, text='|x|', bg='#f0f0ed', command=lambda: add_symbol('|'))
+btn_factorial = Button(width=3, text='n!', bg='#f0f0ed', command=lambda: add_symbol('!'))
+btn_dot = Button(width=3, text='.', bg='#f0f0ed', command=lambda: add_symbol('.'))
+btn_plus = Button(width=3, text='+', bg='#f0f0ed', command=lambda: add_symbol('+'))
+btn_minus = Button(width=3, text='-', bg='#f0f0ed', command=lambda: add_symbol('-'))
+btn_multiplication = Button(width=3, text='*', bg='#f0f0ed', command=lambda: add_symbol('*'))
+btn_division = Button(width=3, text='/', bg='#f0f0ed', command=lambda: add_symbol('/'))
+btn_clean_entry = Button(width=3, text='CE', bg='#f0f0ed', command=clear)
+btn_delete_last_symbol = Button(width=3, text='⇐', bg='#f0f0ed', command=clear_last_symbol)
 
-btn_digit_1 = Button(width=3, text='1', activebackground='#a6a6a6', command=lambda: add_symbol('1'))
-btn_digit_2 = Button(width=3, text='2', activebackground='#a6a6a6', command=lambda: add_symbol('2'))
-btn_digit_3 = Button(width=3, text='3', activebackground='#a6a6a6', command=lambda: add_symbol('3'))
-btn_digit_4 = Button(width=3, text='4', activebackground='#a6a6a6', command=lambda: add_symbol('4'))
-btn_digit_5 = Button(width=3, text='5', activebackground='#a6a6a6', command=lambda: add_symbol('5'))
-btn_digit_6 = Button(width=3, text='6', activebackground='#a6a6a6', command=lambda: add_symbol('6'))
-btn_digit_7 = Button(width=3, text='7', activebackground='#a6a6a6', command=lambda: add_symbol('7'))
-btn_digit_8 = Button(width=3, text='8', activebackground='#a6a6a6', command=lambda: add_symbol('8'))
-btn_digit_9 = Button(width=3, text='9', activebackground='#a6a6a6', command=lambda: add_symbol('9'))
-btn_digit_0 = Button(width=3, text='0', activebackground='#a6a6a6', command=lambda: add_symbol('0'))
+btn_digit_1 = Button(width=3, text='1', bg='#f0f0ed', command=lambda: add_symbol('1'))
+btn_digit_2 = Button(width=3, text='2', bg='#f0f0ed', command=lambda: add_symbol('2'))
+btn_digit_3 = Button(width=3, text='3', bg='#f0f0ed', command=lambda: add_symbol('3'))
+btn_digit_4 = Button(width=3, text='4', bg='#f0f0ed', command=lambda: add_symbol('4'))
+btn_digit_5 = Button(width=3, text='5', bg='#f0f0ed', command=lambda: add_symbol('5'))
+btn_digit_6 = Button(width=3, text='6', bg='#f0f0ed', command=lambda: add_symbol('6'))
+btn_digit_7 = Button(width=3, text='7', bg='#f0f0ed', command=lambda: add_symbol('7'))
+btn_digit_8 = Button(width=3, text='8', bg='#f0f0ed', command=lambda: add_symbol('8'))
+btn_digit_9 = Button(width=3, text='9', bg='#f0f0ed', command=lambda: add_symbol('9'))
+btn_digit_0 = Button(width=3, text='0', bg='#f0f0ed', command=lambda: add_symbol('0'))
 
 # first_floor_digits
 
@@ -684,11 +758,11 @@ btn_minus.place(x=335, y=135)
 
 # create_clear_button
 
-btn_del_per = Button(window, activebackground='#a6a6a6', text='Remove precision', width=15, command=clear_per)
+btn_del_per = Button(window, text='Remove precision', bg='#f0f0ed', width=15, command=clear_per)
 btn_del_per.place(x=370, y=135)
 
 # create_calculate_button
-btn_clicked = Button(window, activebackground='#a6a6a6', text='Calculate ', width=15, command=clicked)
+btn_clicked = Button(window, text='Calculate ', bg='#f0f0ed', width=15, command=clicked)
 btn_clicked.place(x=370, y=75)
 
 window.config(menu=main_menu)
