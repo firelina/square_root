@@ -623,8 +623,8 @@ def InfoWin():
         btn_inf.pack(side = TOP)
         top.iconphoto(False, photo)
         top.geometry('200x300')
-        button_destroy = Button(top, width = 15, text = 'Close', command = destr)
-        button_destroy.pack(side = BOTTOM)
+        top.resizable(width=False, height=False)
+        top.protocol('WM_DELETE_WINDOW', destr)
         opened.set(1)
     else:
         pass
